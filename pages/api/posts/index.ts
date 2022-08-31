@@ -1,8 +1,8 @@
+import { postAPIUtils } from './../../../utils/authAPI/postUtils';
 import mongoose from 'mongoose'
 import { NextApiResponse } from 'next'
-import { ExtendedRequestType } from '../../app/types/apiTypes'
-import { PostType } from '../../app/types/types'
-const PostModel = require('./models/post')
+import { ExtendedRequestType } from '../../../app/types/apiTypes'
+import { PostType } from '../../../app/types/types'
 
 export default async (req: ExtendedRequestType<PostType>, res: NextApiResponse) => {
 
@@ -12,17 +12,17 @@ export default async (req: ExtendedRequestType<PostType>, res: NextApiResponse) 
     await mongoose.connect(mongoDBUrl)
 
     switch (req.method) {
+      case 'GET':
+        postAPIUtils.get(req, res)
+        break
       case 'POST':
-        await PostModel.create(req.body)
-        res.status(200).json('ok')
+        postAPIUtils.post(req, res)
         break;
       case 'DELETE':
         console.log('prikol')
         break;
       default:
-        const posts = await PostModel.find()
-        res.status(200).json(posts)
-        break;
+        return res.status(400).json('Пришло туда куда не должно было приходить')
     }
 
   } catch (error) {

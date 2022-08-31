@@ -6,4 +6,4 @@ const PostSchema = new Schema({
   description: { type: String, required: true },
 })
 
-module.exports = mongoose.models.PostModel || model('PostModel', PostSchema)
+export default mongoose.models.PostModel || model('PostModel', PostSchema)

@@ -10,5 +10,9 @@ export const fetchAPI = {
       id: post._id
     }))
     return returnValue
+  },
+  async getAuth () {
+    const response = await fetch('api/auth').then(resp => resp.json())
+    return response
   }
 }

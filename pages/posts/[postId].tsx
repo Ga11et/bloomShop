@@ -14,14 +14,6 @@ const Post: FC<PostPropsType> = ({ post }) => {
   </>
 }
 
-// export async function getServerSideProps() {
-//   return {
-//     props: {
-//       name: 'name',
-//       description: 'description'
-//     }
-//   }
-// }
 export const getStaticPaths = async () => {
 
   const pagesCount = 100

@@ -8,3 +8,13 @@ export type PostModelType = {
   description: string
   _id: string
 }
+export type AdminModelType = {
+  login: string
+  password: string
+  _id: string
+}
+export type TokenModelType = {
+  token: string
+  id: string
+  _id: string
+}
