@@ -3,9 +3,9 @@ import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { postAPI } from '../../app/api/postAPI'
-import { useAppDispatch, useAppSelector } from '../../components/store/hooks'
-import { mainThunks } from '../../components/store/reducers/thunks'
-import { wrapper } from '../../components/store/store'
+import { useAppDispatch, useAppSelector } from '../../app/store/hooks'
+import { mainThunks } from '../../app/store/reducers/thunks'
+import { wrapper } from '../../app/store/store'
 
 type LoginPagePropsType = {
   

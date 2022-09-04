@@ -3,8 +3,7 @@ import { NextApiResponse } from 'next'
 import { ExtendedRequestType } from '../../../app/types/apiTypes'
 import { AuthData } from '../../../app/types/clientApiTypes'
 import bcrypt from 'bcrypt'
-const AdminModel = require('../models/admin')
-
+import AdminModel from '../../../utils/models/admin'
 
 export default async (req: ExtendedRequestType<AuthData>, res: NextApiResponse) => {
 

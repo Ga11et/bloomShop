@@ -7,8 +7,8 @@ import { deleteAPI } from '../../app/api/deleteAPI'
 import { PostModalWindow } from '../../components/testComponents/modalWindow'
 import { updateAPI } from '../../app/api/updateAPI'
 import Router from 'next/router'
-import { useAppDispatch, useAppSelector } from '../../components/store/hooks'
-import { mainThunks } from '../../components/store/reducers/thunks'
+import { useAppDispatch, useAppSelector } from '../../app/store/hooks'
+import { mainThunks } from '../../app/store/reducers/thunks'
 
 type PostsPagePropsType = {
   

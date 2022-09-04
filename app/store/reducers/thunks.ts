@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { deleteAPI } from '../../../app/api/deleteAPI';
-import { fetchAPI } from '../../../app/api/fetchAPI';
+import { deleteAPI } from '../../api/deleteAPI';
+import { fetchAPI } from '../../api/fetchAPI';
 
 export const mainThunks = {
   getAuth: createAsyncThunk(

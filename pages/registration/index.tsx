@@ -38,7 +38,7 @@ const LoginPage: FC<LoginPagePropsType> = ({  }) => {
               <Field name='password' placeholder='Password' type='password' 
                 className='mb-6 w-full border-2 bg-transparent border-sky-400 rounded px-5 py-3 text-xl'
               />
-              <button type='submit'
+              <button type='submit' disabled={isSubmitting}
                 className='px-6 py-3 bg-sky-400 rounded text-white text-xl hover:bg-sky-500 duration-300 w-full'
               >Регистрация</button>
             </Form>

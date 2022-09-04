@@ -13,10 +13,10 @@ export default async (req: ExtendedRequestType<PostType>, res: NextApiResponse) 
 
     switch (req.method) {
       case 'GET':
-        postAPIUtils.get(req, res)
+        await postAPIUtils.get(req, res)
         break
       case 'POST':
-        postAPIUtils.post(req, res)
+        await postAPIUtils.post(req, res)
         break;
       case 'DELETE':
         console.log('prikol')

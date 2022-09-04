@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 type DeleteSVGPropsType = {
-  className: string
+  className?: string
 }
 export const DeleteSVG: FC<DeleteSVGPropsType> = ({ className }) => {
   return <>
