@@ -1,14 +1,12 @@
 import { FC, useEffect, useState } from 'react'
-import { fetchAPI } from '../../app/api/fetchAPI'
-import { PostType } from '../../app/types/types'
 import { Post } from '../../components/testComponents/post'
 import { MyForm } from '../../components/testComponents/myForm'
-import { deleteAPI } from '../../app/api/deleteAPI'
 import { PostModalWindow } from '../../components/testComponents/modalWindow'
-import { updateAPI } from '../../app/api/updateAPI'
 import Router from 'next/router'
 import { useAppDispatch, useAppSelector } from '../../app/store/hooks'
 import { mainThunks } from '../../app/store/reducers/thunks'
+import { PostsThunks } from '../../app/store/reducers/posts/postsThunks'
+import { PostType } from '../../app/types/clientApiTypes'
 
 type PostsPagePropsType = {
   
@@ -16,18 +14,18 @@ type PostsPagePropsType = {
 const PostsPage: FC<PostsPagePropsType> = ({  }) => {
 
 
-  const [posts, setPosts] = useState<PostType[]>([])
   const [modalPostContent, setModalPostContent] = useState<PostType | undefined>(undefined)
   const dispatch = useAppDispatch()
   const { isAuth } = useAppSelector(store => store.MainReducer)
+  const { posts, isLoaded } = useAppSelector(store => store.PostsReducer)
 
   const formSubmit = async (values: { title: string, description: string }) => {
-    const response = await fetch('/api/posts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(values) }).then(resp => resp.json())
-    await fetchAPI.posts().then(posts => setPosts(posts))
+    // const response = await fetch('/api/posts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(values) }).then(resp => resp.json())
+    // await fetchAPI.posts().then(posts => setPosts(posts))
   }
   const deletePostHandler = async (postId: string) => {
-    const response = await deleteAPI.post(postId)
-    await fetchAPI.posts().then(posts => setPosts(posts))
+    // const response = await deleteAPI.post(postId)
+    // await fetchAPI.posts().then(posts => setPosts(posts))
   }
   const closeModalHandler = () => {
     setModalPostContent(undefined)
@@ -37,15 +35,15 @@ const PostsPage: FC<PostsPagePropsType> = ({  }) => {
   }
   const submitModalHandler = async (postData: PostType) => {
     setModalPostContent(undefined)
-    await updateAPI.post({ id: postData.id, description: postData.description, title: postData.title })
-    await fetchAPI.posts().then(posts => setPosts(posts))
+    // await updateAPI.post({ id: postData.id, description: postData.description, title: postData.title })
+    // await fetchAPI.posts().then(posts => setPosts(posts))
   }
   const logoutHandler = () => {
     dispatch(mainThunks.getLogaout())
   }
 
   useEffect(() => {
-    fetchAPI.posts().then(posts => setPosts(posts))
+    dispatch(PostsThunks.getPosts())
     dispatch(mainThunks.getAuth())
   }, [])
   

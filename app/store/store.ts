@@ -1,9 +1,11 @@
+import PostsReducer from './reducers/posts/postsReducer';
 import MainReducer from './reducers/mainReducer';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { Context, createWrapper } from 'next-redux-wrapper';
 
 const rootReducer = combineReducers({
-  MainReducer
+  MainReducer,
+  PostsReducer
 })
 
 export const makeStore = (context: Context) => configureStore({

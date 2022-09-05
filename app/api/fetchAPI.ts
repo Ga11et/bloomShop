@@ -1,15 +1,16 @@
-import { PostModelType } from '../types/serverApiTypes'
-import { PostType } from '../types/types'
+import { postAPIResponse } from '../types/serverApiTypes';
 
 export const fetchAPI = {
-  async posts () {
-    const posts: PostModelType[] = await fetch('/api/posts').then(resp => resp.json())
-    const returnValue: PostType[] = posts.map(post => ({
-      title: post.title,
-      description: post.description,
-      id: post._id
-    }))
-    return returnValue
+  async posts (): Promise<postAPIResponse> {
+    const response = await fetch('/api/posts')
+    if (response.status === 200) {
+      const posts = await response.json()
+      return {
+        status: 200,
+        data: posts
+      }
+    }
+    return 'not ok'
   },
   async getAuth () {
     const response = await fetch('api/auth').then(resp => resp.json())

@@ -1,5 +1,6 @@
 import { NextApiRequest } from 'next';
 import { userRole } from '../../utils/models/admin';
+import { filteredResponse } from './clientApiTypes';
 export interface ExtendedRequestType<B> extends NextApiRequest {
   body: B
 }
@@ -32,3 +33,4 @@ export type TokenJWTPayload = {
   login: string
   role: userRole
 }
+export type postAPIResponse = filteredResponse<PostModelType[]> | 'not ok'
