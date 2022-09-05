@@ -1,5 +1,6 @@
-import { PostModelType } from '../types/apiTypes'
-import { PostType } from '../types/types'
+import { authAPIUtils } from '../../utils/authAPI/authUtils'
+import { PostType } from '../types/clientApiTypes'
+import { PostModelType } from '../types/serverApiTypes'
 
 export const fetchAPI = {
   async posts () {
@@ -12,7 +13,7 @@ export const fetchAPI = {
     return returnValue
   },
   async getAuth () {
-    const response = await fetch('api/auth').then(resp => resp.json())
+    const response = await fetch('api/auth').then(authAPIUtils.handleResponse)
     return response
   }
 }

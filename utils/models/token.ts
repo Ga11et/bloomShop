@@ -1,8 +1,13 @@
 import mongoose, { model, Schema } from 'mongoose';
 
-const TokenSchema = new Schema({
+interface IToken {
+  id: string
+  token: string
+}
+
+const TokenSchema = new Schema<IToken>({
   id: { type: String, required: true },
   token: { type: String, required: true }
 })
 
-export default mongoose.models.TokenModel || model('TokenModel', TokenSchema) 
+export const TokenModel = mongoose.models.TokenModel || model<IToken>('TokenModel', TokenSchema) 

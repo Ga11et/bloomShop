@@ -24,15 +24,13 @@ export const getStaticPaths = async () => {
     paths.push({ params: { postId: index.toString() }})
     index += 1
   }
-  console.log(paths)
   return {
     paths: paths,
-    fallback: false, // can also be true or 'blocking'
+    fallback: false
   }
 }
 
 export const getStaticProps: GetStaticProps<{},{postId: string}> = async ({ params }) => {
-  console.log(params)
   const post = await fetch(`https://jsonplaceholder.typicode.com/posts/${params?.postId}`)
   const postInfo = await post.json()
   return {

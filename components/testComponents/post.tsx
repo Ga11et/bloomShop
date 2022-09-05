@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { PostType } from '../../app/types/types'
+import { PostType } from '../../app/types/clientApiTypes'
 import { DeleteSVG } from '../svgIcons/delete'
 import { PencilSVG } from '../svgIcons/pencil'
 

@@ -2,7 +2,6 @@ import { Field, Form, Formik } from 'formik'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { postAPI } from '../../app/api/postAPI'
 import { useAppDispatch, useAppSelector } from '../../app/store/hooks'
 import { mainThunks } from '../../app/store/reducers/thunks'
 import { wrapper } from '../../app/store/store'
@@ -38,8 +37,7 @@ const LoginPage: NextPage<LoginPagePropsType> = ({  }) => {
         initialValues={initialValues}
         onSubmit={async (values, { setSubmitting }) => {
           setSubmitting(true)
-          const response = await postAPI.authMe(values)
-          if (response === 'ok') router.push('/posts')
+          await dispatch(mainThunks.getLogin(values))
           setSubmitting(false)
         }}
       >

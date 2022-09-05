@@ -15,6 +15,8 @@ export const MyForm: FC<MyFormPropsType> = ({ formSubmit }) => {
       initialValues={initialValues}
       onSubmit={ async (values, { setSubmitting }) => {
         setSubmitting(true)
+        console.log('click')
+        console.log(values)
         await formSubmit(values)
         setSubmitting(false)
       }}

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import { NextApiResponse } from 'next'
-import { AdminModelType, ExtendedRequestType } from '../../../app/types/apiTypes'
+import { AdminModelType, ExtendedRequestType } from '../../../app/types/serverApiTypes'
 import { AuthData } from '../../../app/types/clientApiTypes'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'

@@ -10,9 +10,6 @@
     "build": "next build"
   },
   "dependencies": {
-    "@emotion/react": "^11.10.4",
-    "@emotion/styled": "^11.10.4",
-    "@mui/material": "^5.10.3",
     "@reduxjs/toolkit": "^1.8.5",
     "@types/bcrypt": "^5.0.0",
     "bcrypt": "^5.0.1",
@@ -23,15 +20,12 @@
     "mongoose": "^6.5.3",
     "next": "^12.2.5",
     "next-redux-wrapper": "^7.0.5",
-    "npm": "^8.19.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.2",
-    "redux": "^4.2.0",
-    "redux-logger": "^3.0.6"
+    "redux": "^4.2.0"
   },
   "devDependencies": {
-    "@types/js-cookie": "^3.0.2",
     "@types/jsonwebtoken": "^8.5.9",
     "@types/node": "^18.7.14",
     "@types/react": "^18.0.17",

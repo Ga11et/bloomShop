@@ -1,6 +1,6 @@
 import { Field, Form, Formik } from 'formik'
 import { FC } from 'react'
-import { PostType } from '../../app/types/types'
+import { PostType } from '../../app/types/clientApiTypes'
 
 type PostModalWindowPropsType = {
   postData: PostType
