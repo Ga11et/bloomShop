@@ -1,10 +1,10 @@
 import { NextApiResponse } from 'next'
-import { AdminModelType, ExtendedRequestType, TokenModelType } from '../../app/types/apiTypes'
+import { AdminModelType, ExtendedRequestType, TokenModelType } from '../../app/types/serverApiTypes'
 import { AuthData } from '../../app/types/clientApiTypes'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import TokenModel from '../models/token'
-import AdminModel from '../models/admin'
+import { AdminModel } from '../models/admin'
 
 export const authAPIUtils = {
   async post(req: ExtendedRequestType<AuthData>, res: NextApiResponse) {

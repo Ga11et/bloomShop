@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
-import { ExtendedRequestType } from '../../app/types/apiTypes';
-import { PostType } from '../../app/types/types';
+import { ExtendedRequestType } from '../../app/types/serverApiTypes';
+import { PostType } from '../../app/types/clientApiTypes';
 import PostModel from '../models/post'
 
 export const postAPIUtils = {

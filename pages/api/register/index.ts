@@ -1,9 +1,10 @@
 import mongoose from 'mongoose'
 import { NextApiResponse } from 'next'
-import { ExtendedRequestType } from '../../../app/types/apiTypes'
+import { ExtendedRequestType } from '../../../app/types/serverApiTypes'
 import { AuthData } from '../../../app/types/clientApiTypes'
 import bcrypt from 'bcrypt'
-import AdminModel from '../../../utils/models/admin'
+import { AdminModel } from '../../../utils/models/admin'
+import { regAPIUtils } from '../../../utils/registrationAPI/regAPIUtils'
 
 export default async (req: ExtendedRequestType<AuthData>, res: NextApiResponse) => {
 
@@ -16,9 +17,7 @@ export default async (req: ExtendedRequestType<AuthData>, res: NextApiResponse) 
       case 'GET':
         break
       case 'POST':
-        const bcryptedPass = bcrypt.hashSync(req.body.password, 7)
-        await AdminModel.create({ login: req.body.login, password: bcryptedPass })
-        res.status(200).json('ok')
+        regAPIUtils.post(req, res)
         break;
       default:
         res.status(200).json('work')

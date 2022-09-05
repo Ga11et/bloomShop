@@ -1,8 +1,17 @@
 import mongoose, { model, Schema } from 'mongoose';
 
-const AdminSchema = new Schema({
+export type userRole = 'user' | 'admin'
+
+interface IAdmin {
+  login: string
+  password: string
+  role: userRole
+}
+
+const AdminSchema = new Schema<IAdmin>({
   login: { type: String, required: true },
   password: { type: String, required: true },
+  role: { type: String, required: true, default: 'user' }
 })
 
-export default mongoose.models.AdminModel || model('AdminModel', AdminSchema)
+export const AdminModel = mongoose.models.AdminModel || model<IAdmin>('AdminModel', AdminSchema)

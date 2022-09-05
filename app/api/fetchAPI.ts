@@ -1,4 +1,4 @@
-import { PostModelType } from '../types/apiTypes'
+import { PostModelType } from '../types/serverApiTypes'
 import { PostType } from '../types/types'
 
 export const fetchAPI = {

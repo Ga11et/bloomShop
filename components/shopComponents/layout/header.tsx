@@ -76,6 +76,10 @@ export const Header: FC<HeaderPropsType> = ({  }) => {
                 horizontal: 'right',
                 vertical: 'bottom'
               }}
+              transformOrigin={{
+                horizontal: 'right',
+                vertical: 'top'
+              }}
               onClose={() => setAccountMenuAnchor(null)}
             >
               {accountMenu.map((menu) => (

@@ -1,9 +1,7 @@
 import mongoose from 'mongoose'
 import { NextApiResponse } from 'next'
-import { AdminModelType, ExtendedRequestType } from '../../../app/types/apiTypes'
+import { ExtendedRequestType } from '../../../app/types/serverApiTypes'
 import { AuthData } from '../../../app/types/clientApiTypes'
-import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
 import { authAPIUtils } from '../../../utils/authAPI/authUtils'
 
 export default async (req: ExtendedRequestType<AuthData>, res: NextApiResponse) => {

@@ -1,8 +1,8 @@
 import mongoose from 'mongoose'
 import { NextApiResponse } from 'next'
-import { ExtendedRequestType } from '../../../app/types/apiTypes'
+import { ExtendedRequestType } from '../../../app/types/serverApiTypes'
 import { PostType } from '../../../app/types/types'
-import { postAPIUtils } from '../../../utils/authAPI/postUtils'
+import { postAPIUtils } from '../../../utils/postAPI/postAPIUtils'
 
 export default async (req: ExtendedRequestType<PostType>, res: NextApiResponse) => {
 
@@ -13,10 +13,10 @@ export default async (req: ExtendedRequestType<PostType>, res: NextApiResponse) 
 
     switch (req.method) {
       case 'DELETE':
-        postAPIUtils.delete(req, res)
+        await postAPIUtils.delete(req, res)
         break;
       case 'PUT':
-        postAPIUtils.update(req, res)
+        await postAPIUtils.update(req, res)
         break;
       default:
         res.status(200).json('prokol')
