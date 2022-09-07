@@ -60,7 +60,7 @@ const LoginPage: NextPage<LoginPagePropsType> = ({  }) => {
           alignItems: 'center'
         }}>
           <Avatar sx={{
-            marginBottom: '10px',
+            marginBottom: '20px',
             backgroundColor: (t) => t.palette.secondary.main
           }}>
             <LockOpenOutlined />

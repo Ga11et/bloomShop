@@ -15,10 +15,10 @@ export const fetchAPI = {
   async getAuth (): Promise<authAPIResponse> {
     const response = await fetch('api/auth')
     if (response.status === 200) {
-      const posts = await response.json()
+      const authData = await response.json()
       return {
         status: 200,
-        data: posts
+        data: authData
       }
     }
     return 'not ok'

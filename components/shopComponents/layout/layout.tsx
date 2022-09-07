@@ -1,5 +1,6 @@
-import { createTheme, ThemeProvider } from '@mui/material';
-import { FC, ReactNode } from 'react'
+import { Alert, Grow } from '@mui/material'
+import { FC, ReactNode, useEffect, useState } from 'react'
+import { useAppSelector } from '../../../app/store/hooks'
 import { Header } from './header'
 
 
@@ -9,8 +10,23 @@ type LayoutPropsType = {
 
 export const Layout: FC<LayoutPropsType> = ({ children }) => {
 
+  const [isAlertShow, setIsAlertShow] = useState(false)
+  const { isAuth } = useAppSelector(state => state.MainReducer)
+
+  useEffect(() => {
+    if (isAuth) setIsAlertShow(true)
+  }, [isAuth])
+
   return <>
-      <Header />
-      {children}
+    <Grow in={isAlertShow} appear>
+      <Alert severity='success' sx={{
+        position: 'fixed',
+        left: 20,
+        bottom: 20,
+        minWidth: '200px'
+      }} onClose={() => setIsAlertShow(false)}>Logged</Alert>
+    </Grow>
+    <Header />
+    {children}
   </>
 }

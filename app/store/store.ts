@@ -1,11 +1,13 @@
 import PostsReducer from './reducers/posts/postsReducer';
 import MainReducer from './reducers/mainReducer';
+import AuthReducer from './reducers/auth/authReducer';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { Context, createWrapper } from 'next-redux-wrapper';
 
 const rootReducer = combineReducers({
   MainReducer,
-  PostsReducer
+  PostsReducer,
+  AuthReducer
 })
 
 export const makeStore = (context: Context) => configureStore({

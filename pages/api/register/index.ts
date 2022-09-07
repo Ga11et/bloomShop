@@ -1,12 +1,10 @@
 import mongoose from 'mongoose'
 import { NextApiResponse } from 'next'
 import { ExtendedRequestType } from '../../../app/types/serverApiTypes'
-import { AuthData } from '../../../app/types/clientApiTypes'
-import bcrypt from 'bcrypt'
-import { AdminModel } from '../../../utils/models/admin'
+import { RegData } from '../../../app/types/clientApiTypes'
 import { regAPIUtils } from '../../../utils/registrationAPI/regAPIUtils'
 
-export default async (req: ExtendedRequestType<AuthData>, res: NextApiResponse) => {
+export default async (req: ExtendedRequestType<RegData>, res: NextApiResponse) => {
 
   const mongoDBUrl = process.env.MONGODB_CONNECT_TOKEN || ''
 

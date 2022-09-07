@@ -2,6 +2,13 @@ export type AuthData = {
   login: string
   password: string
 }
+export type RegData = {
+  login: string
+  password: string
+  firstName: string
+  secondName: string
+  email: string
+}
 export type PostType = {
   id: string
   title: string
