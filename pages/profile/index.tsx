@@ -1,16 +1,15 @@
 import { FC } from 'react'
 import { Layout } from '../../components/shopComponents/layout/layout'
 
-type ShopPagePropsType = {
-
+type ProfilePagePropsType = {
+  
 }
-
-const ShopPage: FC<ShopPagePropsType> = ({  }) => {
+const ProfilePage: FC<ProfilePagePropsType> = ({  }) => {
   return <>
     <Layout>
-      hello
+      profile
     </Layout>
   </>
 }
 
-export default ShopPage
+export default ProfilePage

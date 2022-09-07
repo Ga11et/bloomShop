@@ -1,6 +1,9 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import { AppBar, Container, Toolbar, Box, Menu, Typography, IconButton, MenuItem, Button, Tooltip, Avatar } from '@mui/material'
 import { MenuSVG } from '../../svgIcons/menu'
+import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
+import { mainThunks } from '../../../app/store/reducers/thunks'
+import Router from 'next/router'
 
 type HeaderPropsType = {
   
@@ -9,20 +12,35 @@ export const Header: FC<HeaderPropsType> = ({  }) => {
 
   const [menuAnchor, setMenuAnchor] = React.useState<null | HTMLElement>(null)
   const [accountMenuAnchor, setAccountMenuAnchor] = React.useState<null | HTMLElement>(null)
+
+  const { isAuth, authData } = useAppSelector(store => store.MainReducer)
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(mainThunks.getAuth())
+  }, [])
+
   const pages = ['Магазин', 'Цены', 'Блог']
-  const accountMenu = ['Аккаунт', 'Корзина', 'Выйти']
+  const accountMenu = authData.role === 'admin'
+    ? [{ title: 'Админка', handler: () => Router.push('./admin') },
+    { title: 'Аккаунт', handler: () => Router.push('./profile') },
+    { title: 'Корзина', handler: () => Router.push('./basket') },
+    { title: 'Выйти', handler: () => dispatch(mainThunks.getLogaout()) }]
+    : [{ title: 'Аккаунт', handler: () => Router.push('./profile') },
+    { title: 'Корзина', handler: () => Router.push('./basket') },
+    { title: 'Выйти', handler: () => dispatch(mainThunks.getLogaout()) }]
 
   const onNavigationClick = (page: string) => {
     console.log(page)
     setMenuAnchor(null)
   }
-  const onSettingsClick = (setting: string) => {
-    console.log(setting)
+  const onSettingsClick = (handler: Function) => {
     setAccountMenuAnchor(null)
+    handler()
   }
 
   return <>
-    <AppBar position='static'>
+    <AppBar position='static' >
       <Container maxWidth='xl'>
         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
           {/* Mobile Menu */}
@@ -63,10 +81,10 @@ export const Header: FC<HeaderPropsType> = ({  }) => {
             ))}
           </Box>
           {/* Accaunt Menu */}
-          <Box>
+          {isAuth ? <Box>
             <Tooltip title='Открыть настройки'>
               <IconButton onClick={(event) => setAccountMenuAnchor(event.currentTarget)} >
-                <Avatar alt='Fyodor' />
+                <Avatar alt={authData.login} src={'tk;ladsf'} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -83,12 +101,13 @@ export const Header: FC<HeaderPropsType> = ({  }) => {
               onClose={() => setAccountMenuAnchor(null)}
             >
               {accountMenu.map((menu) => (
-                <MenuItem key={menu} onClick={() => onSettingsClick(menu)}>
-                  <Typography>{menu}</Typography>
+                <MenuItem key={menu.title} onClick={() => onSettingsClick(menu.handler)}>
+                  <Typography>{menu.title}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
+          :<Button variant='outlined' onClick={() => Router.push('./login')}>Войти</Button>}
         </Toolbar>
       </Container>
     </AppBar>

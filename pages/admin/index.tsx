@@ -1,16 +1,14 @@
 import { FC } from 'react'
 import { Layout } from '../../components/shopComponents/layout/layout'
 
-type ShopPagePropsType = {
-
+type AdminPagePropsType = {
+  
 }
-
-const ShopPage: FC<ShopPagePropsType> = ({  }) => {
+const AdminPage: FC<AdminPagePropsType> = ({  }) => {
   return <>
     <Layout>
-      hello
+      admin    
     </Layout>
   </>
 }
-
-export default ShopPage
+export default AdminPage

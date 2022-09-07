@@ -33,17 +33,20 @@ export const MainReducer = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(mainThunks.getAuth.fulfilled, ( state, action ) => {
-      if (action.payload === 'ok') state.isAuth = true
+      if (action.payload !== 'not ok') {
+        state.authData = action.payload.data
+        state.isAuth = true
+      }
     }),
     builder.addCase(mainThunks.getLogaout.fulfilled, ( state, action ) => {
       if (action.payload === 'ok') state.isAuth = false
     })
     builder.addCase(mainThunks.postLogin.pending, (state) => {
-      state.isAuthLoaded = false
+      state.isAuthLoaded = true
       state.isAuth = false
     })
     builder.addCase(mainThunks.postLogin.fulfilled, (state, action) => {
-      state.isAuthLoaded = true
+      state.isAuthLoaded = false
       if (action.payload !== 'not ok') {
         state.authData = action.payload.data
         state.isAuth = true

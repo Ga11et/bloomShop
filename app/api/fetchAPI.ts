@@ -1,4 +1,4 @@
-import { postAPIResponse } from '../types/serverApiTypes';
+import { authAPIResponse, postAPIResponse } from '../types/serverApiTypes';
 
 export const fetchAPI = {
   async posts (): Promise<postAPIResponse> {
@@ -12,8 +12,15 @@ export const fetchAPI = {
     }
     return 'not ok'
   },
-  async getAuth () {
-    const response = await fetch('api/auth').then(resp => resp.json())
-    return response
+  async getAuth (): Promise<authAPIResponse> {
+    const response = await fetch('api/auth')
+    if (response.status === 200) {
+      const posts = await response.json()
+      return {
+        status: 200,
+        data: posts
+      }
+    }
+    return 'not ok'
   }
 }

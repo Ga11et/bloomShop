@@ -1,8 +1,8 @@
-import { Field, Form, Formik } from 'formik'
+import { Avatar, Box, Button, Grid, Link, Paper, TextField, Typography } from '@mui/material'
+import { LockOpenOutlined } from '@mui/icons-material'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
-import { postAPI } from '../../app/api/postAPI'
+import { FormEvent, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../app/store/hooks'
 import { mainThunks } from '../../app/store/reducers/thunks'
 import { wrapper } from '../../app/store/store'
@@ -15,51 +15,80 @@ const LoginPage: NextPage<LoginPagePropsType> = ({  }) => {
   const router = useRouter()
   const dispatch = useAppDispatch()
 
-  const { isAuth } = useAppSelector(store => store.MainReducer)
+  const { isAuth, isAuthLoaded } = useAppSelector(store => store.MainReducer)
 
   useEffect(() => {
-    if (isAuth === true) router.push('/posts')
+    if (isAuth === true) router.push('/shop')
   }, [isAuth])
 
   useEffect(() => {
     dispatch(mainThunks.getAuth())
   }, [])
 
-  const initialValues = {
-    login: '',
-    password: ''
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const data = new FormData(event.currentTarget)
+    const login = data.get('login') as string
+    const password = data.get('password') as string
+    if (login && password) {
+      dispatch(mainThunks.postLogin({ login, password }))
+    }
   }
 
   return <>
-    <main className='w-full h-screen bg-sky-100 flex items-center justify-center'>
-      <Formik
-        initialValues={initialValues}
-        onSubmit={async (values, { setSubmitting }) => {
-          setSubmitting(true)
-          await dispatch(mainThunks.postLogin(values))
-          setSubmitting(false)
-        }}
-      >
-        {({ isSubmitting }) => {
-          return <>
-            <Form className='w-80 h-min border-2 rounded border-sky-400 p-5 bg-white'>
-              <h2
-                className='text-2xl mb-6'
-              >Форма Логина</h2>
-              <Field name='login' placeholder='Login' 
-                className='mb-6 w-full border-2 bg-transparent border-sky-400 rounded px-5 py-3 text-xl'
-              />
-              <Field name='password' placeholder='Password' type='password' 
-                className='mb-6 w-full border-2 bg-transparent border-sky-400 rounded px-5 py-3 text-xl'
-              />
-              <button type='submit' disabled={isSubmitting}
-                className='px-6 py-3 bg-sky-400 rounded text-white text-xl hover:bg-sky-500 duration-300 w-full'
-              >Логин</button>
-            </Form>
-          </>
-        }}
-      </Formik>
-    </main>
+  <Paper component='main' square sx={{
+    display: 'flex',
+    justifyContent: 'center',
+    backgroundColor: (t) => t.palette.background.paper
+  }}>
+    <Grid container component='div' sx={{ height: '100vh' }}>
+      <Grid item md={7} sm={4} xs={false} sx={{
+        backgroundColor: 'grey',
+        backgroundImage: 'url(https://source.unsplash.com/random)',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+      }} />
+      <Grid item md={5} sm={8} xs={12} component={Paper} elevation={6} square sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center'
+      }}>
+        <Box component='form' px={4} onSubmit={handleSubmit} sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center'
+        }}>
+          <Avatar sx={{
+            marginBottom: '10px',
+            backgroundColor: (t) => t.palette.secondary.main
+          }}>
+            <LockOpenOutlined />
+          </Avatar>
+          <Typography variant="h5" component="h1" mb={2}>
+            Форма логина
+          </Typography>
+          <TextField id='login' required fullWidth label='Логин' name='login' autoFocus margin='normal' />
+          <TextField id='password' required fullWidth label='Пароль' name='password' type='password' margin='normal' />
+          <Button disabled={isAuthLoaded} type='submit' fullWidth variant='outlined' size='large' sx={{
+            marginTop: '10px',
+            marginBottom: '10px'
+          }}>Зайти</Button>
+        </Box>
+        <Box px={4} mt={1} sx={{
+          display: 'flex',
+          justifyContent: 'space-between'
+        }}>
+          <Link variant="body1" href='./registration'>
+            Регистрация
+          </Link>
+          <Link variant="body1" href='#'>
+            Вспомнить пароль
+          </Link>
+        </Box>
+      </Grid>
+    </Grid>
+  </Paper>
   </>
 }
 

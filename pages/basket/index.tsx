@@ -1,16 +1,15 @@
 import { FC } from 'react'
 import { Layout } from '../../components/shopComponents/layout/layout'
 
-type ShopPagePropsType = {
-
+type BasketPagePropsType = {
+  
 }
-
-const ShopPage: FC<ShopPagePropsType> = ({  }) => {
+const BasketPage: FC<BasketPagePropsType> = ({  }) => {
   return <>
     <Layout>
-      hello
+      basket    
     </Layout>
   </>
 }
 
-export default ShopPage
+export default BasketPage
