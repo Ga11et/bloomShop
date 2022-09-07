@@ -1,6 +1,6 @@
 import mongoose, { model, Schema } from 'mongoose';
 
-export type userRole = 'user' | 'admin'
+export type userRole = 'user' | 'admin' | 'none'
 
 interface IAdmin {
   login: string

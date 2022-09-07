@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import { NextApiResponse } from 'next'
-import { ExtendedRequestType } from '../../../app/types/serverApiTypes'
-import { PostType } from '../../../app/types/types'
+import { PostType } from '../../../app/types/clientApiTypes'
+import { ExtendedRequestType, PostModelType } from '../../../app/types/serverApiTypes'
 import { postAPIUtils } from '../../../utils/postAPI/postAPIUtils'
 
 export default async (req: ExtendedRequestType<PostType>, res: NextApiResponse) => {

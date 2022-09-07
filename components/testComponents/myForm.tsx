@@ -1,10 +1,15 @@
 import { Field, Form, Formik } from 'formik'
 import { FC } from 'react'
+import { useAppDispatch } from '../../app/store/hooks'
+import { PostsThunks } from '../../app/store/reducers/posts/postsThunks'
 
 type MyFormPropsType = {
-  formSubmit: (values: { title: string, description: string }) => void
+
 }
-export const MyForm: FC<MyFormPropsType> = ({ formSubmit }) => {
+export const MyForm: FC<MyFormPropsType> = ({  }) => {
+
+  const dispatch = useAppDispatch()
+
   const initialValues = {
     title: '',
     description: ''
@@ -15,7 +20,7 @@ export const MyForm: FC<MyFormPropsType> = ({ formSubmit }) => {
       initialValues={initialValues}
       onSubmit={ async (values, { setSubmitting }) => {
         setSubmitting(true)
-        await formSubmit(values)
+        await dispatch(PostsThunks.addPost(values))
         setSubmitting(false)
       }}
     >

@@ -18,12 +18,10 @@ const LoginPage: NextPage<LoginPagePropsType> = ({  }) => {
   const { isAuth } = useAppSelector(store => store.MainReducer)
 
   useEffect(() => {
-    console.log(isAuth)
     if (isAuth === true) router.push('/posts')
   }, [isAuth])
 
   useEffect(() => {
-    console.log(isAuth)
     dispatch(mainThunks.getAuth())
   }, [])
 
@@ -38,8 +36,7 @@ const LoginPage: NextPage<LoginPagePropsType> = ({  }) => {
         initialValues={initialValues}
         onSubmit={async (values, { setSubmitting }) => {
           setSubmitting(true)
-          const response = await postAPI.authMe(values)
-          if (response === 'ok') router.push('/posts')
+          await dispatch(mainThunks.postLogin(values))
           setSubmitting(false)
         }}
       >

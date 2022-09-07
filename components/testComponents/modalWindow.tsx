@@ -1,13 +1,16 @@
 import { Field, Form, Formik } from 'formik'
 import { FC } from 'react'
-import { PostType } from '../../app/types/types'
+import { useAppDispatch } from '../../app/store/hooks'
+import { PostsThunks } from '../../app/store/reducers/posts/postsThunks'
+import { PostType } from '../../app/types/clientApiTypes'
 
 type PostModalWindowPropsType = {
   postData: PostType
   closeHandler: () => void
-  submitHandler: (postData: PostType) => void
 }
-export const PostModalWindow: FC<PostModalWindowPropsType> = ({ closeHandler, submitHandler, postData }) => {
+export const PostModalWindow: FC<PostModalWindowPropsType> = ({ closeHandler, postData }) => {
+
+  const dispatch = useAppDispatch()
 
   const closeButtonHandler = () => {
     closeHandler()
@@ -20,7 +23,13 @@ export const PostModalWindow: FC<PostModalWindowPropsType> = ({ closeHandler, su
           initialValues={{ title: postData.title, description: postData.description }}
           onSubmit={async (values, { setSubmitting }) => {
             setSubmitting(true)
-            await submitHandler({ title: values.title, description: values.description, id: postData.id })
+            const post: PostType = {
+              title: values.title,
+              description: values.description,
+              id: postData.id
+            }
+            await dispatch(PostsThunks.updatePost(post))
+            closeHandler()
             setSubmitting(false)
           }}
         >

@@ -33,4 +33,10 @@ export type TokenJWTPayload = {
   login: string
   role: userRole
 }
+export type AuthUserData = {
+  id: string
+  login: string
+  role: userRole
+}
 export type postAPIResponse = filteredResponse<PostModelType[]> | 'not ok'
+export type authAPIResponse = filteredResponse<AuthUserData> | 'not ok'

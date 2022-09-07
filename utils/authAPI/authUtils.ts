@@ -21,7 +21,7 @@ export const authAPIUtils = {
     await TokenModel.create({ id: user._id, token: token })
 
     res.setHeader("set-cookie", `token=${token}; samesite=lax; httponly;`)
-    res.status(200).json({ role: user.role, login: user.login })
+    res.status(200).json({ role: user.role, login: user.login, id: user._id })
   },
   async get(req: ExtendedRequestType<AuthData>, res: NextApiResponse) {
     const token = req.cookies.token
@@ -34,7 +34,7 @@ export const authAPIUtils = {
     const existingToken: TokenModelType | null = await TokenModel.findOne({ id: isTokenValid.id })
     if (!existingToken) return res.status(400).json('Токена нет в базе')
 
-    res.status(200).json({ role: isTokenValid.role, login: isTokenValid.login })
+    res.status(200).json({ role: isTokenValid.role, login: isTokenValid.login, id: isTokenValid.id })
   },
   async delete(req: ExtendedRequestType<AuthData>, res: NextApiResponse) {
     const token = req.cookies.token
