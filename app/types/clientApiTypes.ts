@@ -1,3 +1,5 @@
+import { ErrorType } from './serverApiTypes'
+
 export type AuthData = {
   login: string
   password: string
@@ -29,5 +31,6 @@ export type ProductType = {
 }
 export type filteredResponse<P> = {
   status: number
-  data: P
+  data?: P
+  errors?: ErrorType[]
 }

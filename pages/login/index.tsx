@@ -2,10 +2,11 @@ import { Avatar, Box, Button, Grid, Link, Paper, TextField, Typography } from '@
 import { LockOpenOutlined } from '@mui/icons-material'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { FormEvent, useEffect } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../app/store/hooks'
-import { mainThunks } from '../../app/store/reducers/thunks'
 import { wrapper } from '../../app/store/store'
+import { authThunks } from '../../app/store/reducers/auth/authThunks'
+import { ErrorType } from '../../app/types/serverApiTypes'
 
 type LoginPagePropsType = {
   
@@ -15,15 +16,21 @@ const LoginPage: NextPage<LoginPagePropsType> = ({  }) => {
   const router = useRouter()
   const dispatch = useAppDispatch()
 
-  const { isAuth, isAuthLoaded } = useAppSelector(store => store.MainReducer)
+  const [loaclErrors, setErrors] = useState<ErrorType[]>([])
+  const { errors, isAuthLoading, isAuth } = useAppSelector(store => store.AuthReducer)
 
   useEffect(() => {
     if (isAuth === true) router.push('/shop')
   }, [isAuth])
 
+  // useEffect(() => {
+  //   dispatch(mainThunks.getAuth())
+  // }, [])
+
   useEffect(() => {
-    dispatch(mainThunks.getAuth())
-  }, [])
+    if (errors) setErrors(errors)
+    console.log(errors)
+  }, [errors])
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -31,7 +38,7 @@ const LoginPage: NextPage<LoginPagePropsType> = ({  }) => {
     const login = data.get('login') as string
     const password = data.get('password') as string
     if (login && password) {
-      dispatch(mainThunks.postLogin({ login, password }))
+      dispatch(authThunks.postLogin({ login, password }))
     }
   }
 
@@ -68,9 +75,15 @@ const LoginPage: NextPage<LoginPagePropsType> = ({  }) => {
           <Typography variant="h5" component="h1" mb={2}>
             Форма логина
           </Typography>
-          <TextField id='login' required fullWidth label='Логин' name='login' autoFocus margin='normal' />
-          <TextField id='password' required fullWidth label='Пароль' name='password' type='password' margin='normal' />
-          <Button disabled={isAuthLoaded} type='submit' fullWidth variant='outlined' size='large' sx={{
+          <TextField
+            error={Boolean(loaclErrors.find(error => error.param === 'login'))}
+            helperText={loaclErrors.find(error => error.param === 'login')?.msg}
+            id='login' required fullWidth label='Логин' name='login' autoFocus margin='normal' />
+          <TextField 
+            error={Boolean(loaclErrors.find(error => error.param === 'password'))}
+            helperText={loaclErrors.find(error => error.param === 'password')?.msg}
+            id='password'  required fullWidth label='Пароль' name='password' type='password' margin='normal' />
+          <Button disabled={isAuthLoading} type='submit' fullWidth variant='outlined' size='large' sx={{
             marginTop: '10px',
             marginBottom: '10px'
           }}>Зайти</Button>
@@ -93,6 +106,9 @@ const LoginPage: NextPage<LoginPagePropsType> = ({  }) => {
 }
 
 LoginPage.getInitialProps = wrapper.getInitialPageProps(({ dispatch, getState }) => {
+
+  console.log('getinitialProps', getState().AuthReducer.userData)
+
   return () => {
   }
 })

@@ -1,4 +1,4 @@
-import { postAPIResponse } from '../types/serverApiTypes'
+import { AuthUserData, postAPIResponse, UniversalResponseAPIType } from '../types/serverApiTypes'
 
 export const deleteAPI = {
   async post (postIdl: string): Promise<postAPIResponse> {
@@ -13,7 +13,11 @@ export const deleteAPI = {
     return 'not ok'
   },
   async getLogout () {
-    const response = await fetch('api/auth', { method: 'DELETE' }).then(resp => resp.json())
-    return response
+    const response = await fetch('api/auth', { method: 'DELETE' })
+    const responseData: UniversalResponseAPIType<AuthUserData> = await response.json()
+    return {
+      status: response.status,
+      errors: responseData.errors
+    }
   }
 }

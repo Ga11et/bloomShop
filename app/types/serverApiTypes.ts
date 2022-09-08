@@ -5,6 +5,16 @@ export interface ExtendedRequestType<B> extends NextApiRequest {
   body: B
 }
 
+export type ErrorType = {
+  param: string
+  msg: string
+}
+
+export type UniversalResponseAPIType<R> = {
+  data?: R
+  errors?: ErrorType[]
+}
+
 export type PostModelType = {
   title: string
   description: string
@@ -40,3 +50,4 @@ export type AuthUserData = {
 }
 export type postAPIResponse = filteredResponse<PostModelType[]> | 'not ok'
 export type authAPIResponse = filteredResponse<AuthUserData> | 'not ok'
+export type authAPIResponseTest = filteredResponse<AuthUserData>

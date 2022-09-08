@@ -1,4 +1,4 @@
-import { authAPIResponse, postAPIResponse } from '../types/serverApiTypes';
+import { authAPIResponse, authAPIResponseTest, AuthUserData, postAPIResponse, UniversalResponseAPIType } from '../types/serverApiTypes';
 
 export const fetchAPI = {
   async posts (): Promise<postAPIResponse> {
@@ -12,15 +12,13 @@ export const fetchAPI = {
     }
     return 'not ok'
   },
-  async getAuth (): Promise<authAPIResponse> {
+  async getAuth (): Promise<authAPIResponseTest> {
     const response = await fetch('api/auth')
-    if (response.status === 200) {
-      const authData = await response.json()
-      return {
-        status: 200,
-        data: authData
-      }
+    const responseData: UniversalResponseAPIType<AuthUserData> = await response.json()
+    return {
+      status: response.status,
+      data: responseData.data,
+      errors: responseData.errors
     }
-    return 'not ok'
   }
 }

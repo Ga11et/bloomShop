@@ -11,7 +11,7 @@ type LayoutPropsType = {
 export const Layout: FC<LayoutPropsType> = ({ children }) => {
 
   const [isAlertShow, setIsAlertShow] = useState(false)
-  const { isAuth } = useAppSelector(state => state.MainReducer)
+  const { isAuth } = useAppSelector(state => state.AuthReducer)
 
   useEffect(() => {
     if (isAuth) setIsAlertShow(true)

@@ -2,8 +2,8 @@ import React, { FC, useEffect } from 'react'
 import { AppBar, Container, Toolbar, Box, Menu, Typography, IconButton, MenuItem, Button, Tooltip, Avatar } from '@mui/material'
 import { MenuSVG } from '../../svgIcons/menu'
 import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
-import { mainThunks } from '../../../app/store/reducers/thunks'
 import Router from 'next/router'
+import { authThunks } from '../../../app/store/reducers/auth/authThunks'
 
 type HeaderPropsType = {
   
@@ -13,22 +13,22 @@ export const Header: FC<HeaderPropsType> = ({  }) => {
   const [menuAnchor, setMenuAnchor] = React.useState<null | HTMLElement>(null)
   const [accountMenuAnchor, setAccountMenuAnchor] = React.useState<null | HTMLElement>(null)
 
-  const { isAuth, authData } = useAppSelector(store => store.MainReducer)
+  const { userData } = useAppSelector(store => store.AuthReducer)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(mainThunks.getAuth())
+    dispatch(authThunks.getAuth())
   }, [])
 
   const pages = ['Магазин', 'Цены', 'Блог']
-  const accountMenu = authData.role === 'admin'
+  const accountMenu = userData?.role === 'admin'
     ? [{ title: 'Админка', handler: () => Router.push('./admin') },
     { title: 'Аккаунт', handler: () => Router.push('./profile') },
     { title: 'Корзина', handler: () => Router.push('./basket') },
-    { title: 'Выйти', handler: () => dispatch(mainThunks.getLogaout()) }]
+    { title: 'Выйти', handler: () => dispatch(authThunks.getLogout()) }]
     : [{ title: 'Аккаунт', handler: () => Router.push('./profile') },
     { title: 'Корзина', handler: () => Router.push('./basket') },
-    { title: 'Выйти', handler: () => dispatch(mainThunks.getLogaout()) }]
+    { title: 'Выйти', handler: () => dispatch(authThunks.getLogout()) }]
 
   const onNavigationClick = (page: string) => {
     console.log(page)
@@ -81,10 +81,10 @@ export const Header: FC<HeaderPropsType> = ({  }) => {
             ))}
           </Box>
           {/* Accaunt Menu */}
-          {isAuth ? <Box>
+          {userData ? <Box>
             <Tooltip title='Открыть настройки'>
               <IconButton onClick={(event) => setAccountMenuAnchor(event.currentTarget)} >
-                <Avatar alt={authData.login} src={'tk;ladsf'} />
+                <Avatar alt={userData.login} src={'tk;ladsf'} />
               </IconButton>
             </Tooltip>
             <Menu
