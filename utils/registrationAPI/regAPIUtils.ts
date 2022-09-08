@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import { AuthData, RegData } from '../../app/types/clientApiTypes';
 import { AdminModel } from '../models/admin';
-import { ExtendedRequestType } from './../../app/types/serverApiTypes';
+import { ExtendedRequestType, UniversalResponseAPIType } from './../../app/types/serverApiTypes';
 import bcrypt from 'bcrypt'
 
 export const regAPIUtils = {
@@ -13,20 +13,25 @@ export const regAPIUtils = {
       res.status(400).json('utils ' + error)
     }
   },
-  async post (req: ExtendedRequestType<RegData>, res: NextApiResponse) {
+  async post (req: ExtendedRequestType<RegData>, res: NextApiResponse<UniversalResponseAPIType<{}>>) {
     try {
-      const bcryptedPass = bcrypt.hashSync(req.body.password, 7)
+      const { email, firstName, login, password, secondName } = req.body
+
+      if (!login) return res.status(400).json({ errors: [{ param: 'login', msg: 'Это поле должно быть заполнено' }] })
+      const userWithSameLogin = await AdminModel.find({ login: login })
+      if (userWithSameLogin) return res.status(400).json({ errors: [{ param: 'login', msg: 'Пользователь с данным логином уже существует' }] })
+
+      const bcryptedPass = bcrypt.hashSync(password, 7)
       await AdminModel.create({
-        login: req.body.login,
+        login: login,
         password: bcryptedPass,
-        firstName: req.body.firstName,
-        secondName: req.body.secondName,
-        email: req.body.email
+        firstName: firstName,
+        secondName: secondName,
+        email: email
       })
-      return res.status(200).json('ok')
+      return res.status(200).json({})
     } catch (error) {
-      console.log('utils ' + error)
-      return res.status(400).json('utils ' + error)
+      return res.status(400).json({ errors: [{ param: 'origin', msg: String(error) }] })
     }
   },
   async put (req: ExtendedRequestType<AuthData>, res: NextApiResponse) {

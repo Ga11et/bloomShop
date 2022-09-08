@@ -28,8 +28,11 @@ const AuthReducer = createSlice({
     })
     builder.addCase(authThunks.postRegistration.fulfilled, (state, action) => {
       state.isRegLoading = false
-      if (action.payload !== 'not ok') {
+      if (action.payload.status === 200) {
         state.userData = action.payload.data
+      }
+      if (action.payload.status === 400) {
+        state.errors = action.payload.errors
       }
     })
     builder.addCase(authThunks.postLogin.pending, (state) => {

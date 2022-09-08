@@ -23,14 +23,13 @@ const LoginPage: NextPage<LoginPagePropsType> = ({  }) => {
     if (isAuth === true) router.push('/shop')
   }, [isAuth])
 
-  // useEffect(() => {
-  //   dispatch(mainThunks.getAuth())
-  // }, [])
-
   useEffect(() => {
     if (errors) setErrors(errors)
-    console.log(errors)
   }, [errors])
+
+  useEffect(() => {
+    dispatch(authThunks.getAuth())
+  }, [])
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -104,13 +103,5 @@ const LoginPage: NextPage<LoginPagePropsType> = ({  }) => {
   </Paper>
   </>
 }
-
-LoginPage.getInitialProps = wrapper.getInitialPageProps(({ dispatch, getState }) => {
-
-  console.log('getinitialProps', getState().AuthReducer.userData)
-
-  return () => {
-  }
-})
 
 export default LoginPage

@@ -1,4 +1,4 @@
-import { authAPIResponse, authAPIResponseTest, AuthUserData, UniversalResponseAPIType } from './../types/serverApiTypes';
+import { authAPIResponseTest, AuthUserData, UniversalResponseAPIType } from './../types/serverApiTypes';
 import { IPost } from './../../utils/models/post';
 import { AuthData, RegData } from '../types/clientApiTypes'
 import { postAPIResponse } from '../types/serverApiTypes'
@@ -13,16 +13,14 @@ export const postAPI = {
       errors: responseData.errors
     }
   },
-  async registerMe (loginData: RegData): Promise<authAPIResponse> {
+  async registerMe (loginData: RegData): Promise<authAPIResponseTest> {
     const response = await fetch(`/api/register`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(loginData) })
-    if (response.status === 200) {
-      const userData = await response.json()
-      return {
-        status: 200,
-        data: userData
-      }
+    const responseData: UniversalResponseAPIType<AuthUserData> = await response.json()
+    return {
+      status: response.status,
+      data: responseData.data,
+      errors: responseData.errors
     }
-    return 'not ok'
   },
   async post (postData: IPost): Promise<postAPIResponse> {
     const response = await fetch('/api/posts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(postData) })
