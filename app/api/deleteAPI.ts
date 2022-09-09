@@ -13,7 +13,7 @@ export const deleteAPI = {
     return 'not ok'
   },
   async getLogout () {
-    const response = await fetch('api/auth', { method: 'DELETE' })
+    const response = await fetch('/api/auth', { method: 'DELETE' })
     const responseData: UniversalResponseAPIType<AuthUserData> = await response.json()
     return {
       status: response.status,

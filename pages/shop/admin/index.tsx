@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Layout } from '../../components/shopComponents/layout/layout'
+import { Layout } from '../../../components/shopComponents/layout/layout'
 
 type AdminPagePropsType = {
   

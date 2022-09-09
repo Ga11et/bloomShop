@@ -3,10 +3,9 @@ import { LockOpenOutlined } from '@mui/icons-material'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { FormEvent, useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../app/store/hooks'
-import { wrapper } from '../../app/store/store'
-import { authThunks } from '../../app/store/reducers/auth/authThunks'
-import { ErrorType } from '../../app/types/serverApiTypes'
+import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
+import { authThunks } from '../../../app/store/reducers/auth/authThunks'
+import { ErrorType } from '../../../app/types/serverApiTypes'
 
 type LoginPagePropsType = {
   
@@ -91,7 +90,7 @@ const LoginPage: NextPage<LoginPagePropsType> = ({  }) => {
           display: 'flex',
           justifyContent: 'space-between'
         }}>
-          <Link variant="body1" href='./registration'>
+          <Link variant="body1" href='#' onClick={() => router.push('/shop/registration')}>
             Регистрация
           </Link>
           <Link variant="body1" href='#'>

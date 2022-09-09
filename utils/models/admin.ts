@@ -1,14 +1,16 @@
-import mongoose, { model, Schema } from 'mongoose';
+import mongoose, { model, ObjectId, Schema } from 'mongoose';
 
 export type userRole = 'user' | 'admin' | 'none'
 
-interface IAdmin {
+export interface IAdmin {
+  _id: ObjectId
   login: string
   password: string
   firstName: string
   secondName: string
   email: string
   role: userRole
+  image?: string
 }
 
 const AdminSchema = new Schema<IAdmin>({

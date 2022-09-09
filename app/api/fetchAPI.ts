@@ -1,4 +1,6 @@
-import { authAPIResponse, authAPIResponseTest, AuthUserData, postAPIResponse, UniversalResponseAPIType } from '../types/serverApiTypes';
+import { IProfileData } from './../types/profileSliceTypes';
+import { authAPIResponseTest, AuthUserData, postAPIResponse, UniversalResponseAPIType } from '../types/serverApiTypes';
+import { filteredResponse } from '../types/clientApiTypes';
 
 export const fetchAPI = {
   async posts (): Promise<postAPIResponse> {
@@ -13,8 +15,17 @@ export const fetchAPI = {
     return 'not ok'
   },
   async getAuth (): Promise<authAPIResponseTest> {
-    const response = await fetch('api/auth')
+    const response = await fetch('/api/auth')
     const responseData: UniversalResponseAPIType<AuthUserData> = await response.json()
+    return {
+      status: response.status,
+      data: responseData.data,
+      errors: responseData.errors
+    }
+  },
+  async profileData (): Promise<filteredResponse<IProfileData>> {
+    const response = await fetch('/api/profile')
+    const responseData: UniversalResponseAPIType<IProfileData> = await response.json()
     return {
       status: response.status,
       data: responseData.data,

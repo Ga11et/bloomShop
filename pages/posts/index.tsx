@@ -4,10 +4,10 @@ import { MyForm } from '../../components/testComponents/myForm'
 import { PostModalWindow } from '../../components/testComponents/modalWindow'
 import Router from 'next/router'
 import { useAppDispatch, useAppSelector } from '../../app/store/hooks'
-import { mainThunks } from '../../app/store/reducers/thunks'
 import { PostsThunks } from '../../app/store/reducers/posts/postsThunks'
 import { PostType } from '../../app/types/clientApiTypes'
 import { CircularProgress } from '@mui/material'
+import { authThunks } from '../../app/store/reducers/auth/authThunks'
 
 type PostsPagePropsType = {
   
@@ -17,7 +17,7 @@ const PostsPage: FC<PostsPagePropsType> = ({  }) => {
 
   const [modalPostContent, setModalPostContent] = useState<PostType | undefined>(undefined)
   const dispatch = useAppDispatch()
-  const { isAuth } = useAppSelector(store => store.MainReducer)
+  const { isAuth } = useAppSelector(store => store.AuthReducer)
   const { posts, isLoaded } = useAppSelector(store => store.PostsReducer)
 
   const closeModalHandler = () => {
@@ -27,12 +27,12 @@ const PostsPage: FC<PostsPagePropsType> = ({  }) => {
     setModalPostContent(postData)
   }
   const logoutHandler = () => {
-    dispatch(mainThunks.getLogaout())
+    dispatch(authThunks.getLogout())
   }
 
   useEffect(() => {
     dispatch(PostsThunks.getPosts())
-    dispatch(mainThunks.getAuth())
+    dispatch(authThunks.getAuth())
   }, [])
   
   return <main className='relative'>

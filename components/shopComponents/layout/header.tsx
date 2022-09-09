@@ -2,7 +2,7 @@ import React, { FC, useEffect } from 'react'
 import { AppBar, Container, Toolbar, Box, Menu, Typography, IconButton, MenuItem, Button, Tooltip, Avatar } from '@mui/material'
 import { MenuSVG } from '../../svgIcons/menu'
 import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
-import Router from 'next/router'
+import { useRouter } from 'next/router'
 import { authThunks } from '../../../app/store/reducers/auth/authThunks'
 
 type HeaderPropsType = {
@@ -10,6 +10,7 @@ type HeaderPropsType = {
 }
 export const Header: FC<HeaderPropsType> = ({  }) => {
 
+  const router = useRouter()
   const [menuAnchor, setMenuAnchor] = React.useState<null | HTMLElement>(null)
   const [accountMenuAnchor, setAccountMenuAnchor] = React.useState<null | HTMLElement>(null)
 
@@ -22,12 +23,12 @@ export const Header: FC<HeaderPropsType> = ({  }) => {
 
   const pages = ['Магазин', 'Цены', 'Блог']
   const accountMenu = userData?.role === 'admin'
-    ? [{ title: 'Админка', handler: () => Router.push('./admin') },
-    { title: 'Аккаунт', handler: () => Router.push('./profile') },
-    { title: 'Корзина', handler: () => Router.push('./basket') },
+    ? [{ title: 'Админка', handler: () => router.push('/shop/admin') },
+    { title: 'Аккаунт', handler: () => router.push('/shop/profile') },
+    { title: 'Корзина', handler: () => router.push('/shop/basket') },
     { title: 'Выйти', handler: () => dispatch(authThunks.getLogout()) }]
-    : [{ title: 'Аккаунт', handler: () => Router.push('./profile') },
-    { title: 'Корзина', handler: () => Router.push('./basket') },
+    : [{ title: 'Аккаунт', handler: () => router.push('/shop/profile') },
+    { title: 'Корзина', handler: () => router.push('/shop/basket') },
     { title: 'Выйти', handler: () => dispatch(authThunks.getLogout()) }]
 
   const onNavigationClick = (page: string) => {
@@ -107,7 +108,7 @@ export const Header: FC<HeaderPropsType> = ({  }) => {
               ))}
             </Menu>
           </Box>
-          :<Button variant='outlined' onClick={() => Router.push('./login')}>Войти</Button>}
+          :<Button variant='outlined' onClick={() => router.push('/shop/login')}>Войти</Button>}
         </Toolbar>
       </Container>
     </AppBar>

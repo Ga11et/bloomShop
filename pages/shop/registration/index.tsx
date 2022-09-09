@@ -1,12 +1,11 @@
 import { KeyOutlined } from '@mui/icons-material'
 import { Avatar, Button, Grid, Link, Paper, TextField, Typography } from '@mui/material'
 import { Box } from '@mui/system'
-import { Field, Form, Formik } from 'formik'
 import { useRouter } from 'next/router'
 import { FC, FormEvent, useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../app/store/hooks'
-import { authThunks } from '../../app/store/reducers/auth/authThunks'
-import { ErrorType } from '../../app/types/serverApiTypes'
+import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
+import { authThunks } from '../../../app/store/reducers/auth/authThunks'
+import { ErrorType } from '../../../app/types/serverApiTypes'
 
 type RegistrationPagePropsType = {
   
@@ -14,12 +13,12 @@ type RegistrationPagePropsType = {
 const RegistrationPage: FC<RegistrationPagePropsType> = ({  }) => {
 
   const dispatch = useAppDispatch()
+  const router = useRouter()
   const [localErrors, setLocalErrors] = useState<ErrorType[]>([])
   const { isAuthLoading, errors } = useAppSelector(store => store.AuthReducer)
 
   useEffect(() => {
     if (errors) setLocalErrors(errors)
-    console.log(errors)
   }, [errors])
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -84,7 +83,7 @@ const RegistrationPage: FC<RegistrationPagePropsType> = ({  }) => {
           display: 'flex',
           justifyContent: 'flex-end'
         }}>
-          <Link variant="body1" href='./login'>
+          <Link variant="body1" href='#' onClick={() => router.push('/shop/login')}>
             Есть аккаунт? Страница логина
           </Link>
         </Box>

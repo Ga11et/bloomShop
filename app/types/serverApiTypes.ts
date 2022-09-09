@@ -1,6 +1,7 @@
 import { NextApiRequest } from 'next';
 import { userRole } from '../../utils/models/admin';
 import { filteredResponse } from './clientApiTypes';
+import { IProfileData } from './profileSliceTypes';
 export interface ExtendedRequestType<B> extends NextApiRequest {
   body: B
 }
