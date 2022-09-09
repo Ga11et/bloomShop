@@ -46,10 +46,10 @@ export const authAPIUtils = {
     const isTokenValid = jwt.verify(token, process.env.JWT_SECRET || 'secret') as TokenJWTPayload
     if (!isTokenValid) return res.status(400).json({ errors: [{ param: 'origin', msg: 'Неверный токен' }] })
 
-    const existingToken: TokenModelType | null = await TokenModel.findOne({ id: isTokenValid.id })
+    const existingToken = await TokenModel.findOne({ id: isTokenValid.id }) as IToken
     if (!existingToken) return res.status(400).json({ errors: [{ param: 'origin', msg: 'Токена нет в базе' }] })
     
-    await TokenModel.deleteOne({ existingToken })
+    await TokenModel.deleteOne({ id: existingToken.id })
 
     res.status(200).json({})
   }

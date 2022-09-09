@@ -62,7 +62,7 @@ export const profileAPIUtils = {
       const profileData = await AdminModel.findById(isTokenValid.id) as IAdmin
       if (!profileData) return res.status(422).json({ errors: [{ param: 'origin', msg: 'Профиль не найден' }] })
 
-      await AdminModel.updateOne({ id: isTokenValid.id }, { firstName, secondName, login, email })
+      await AdminModel.updateOne({ _id: isTokenValid.id }, { firstName, secondName, login, email })
       const newProfileData = await AdminModel.findById(isTokenValid.id) as IAdmin
 
       res.status(200).json({ data: {
@@ -90,7 +90,7 @@ export const profileAPIUtils = {
       const profileData = await AdminModel.findById(isTokenValid.id) as IAdmin
       if (!profileData) return res.status(422).json({ errors: [{ param: 'origin', msg: 'Профиль не найден' }] })
 
-      await AdminModel.updateOne({ id: isTokenValid.id }, { status: newStatus })
+      await AdminModel.updateOne({ _id: isTokenValid.id }, { status: newStatus })
       const newProfileData = await AdminModel.findById(isTokenValid.id) as IAdmin
 
       res.status(200).json({ data: {
