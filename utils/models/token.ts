@@ -1,6 +1,6 @@
 import mongoose, { model, Schema } from 'mongoose';
 
-interface IToken {
+export interface IToken {
   id: string
   token: string
 }

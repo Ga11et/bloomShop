@@ -5,6 +5,7 @@ import { IProfileData } from '../../app/types/profileSliceTypes';
 import { ExtendedRequestType, UniversalResponseAPIType } from '../../app/types/serverApiTypes';
 import jwt from 'jsonwebtoken'
 import { IPostStatusData, IUpdateProfileData } from '../../app/types/clientApiTypes';
+import { IToken, TokenModel } from '../models/token';
 
 export const profileAPIUtils = {
   async getAll (req: ExtendedRequestType<{}>, res: NextApiResponse<UniversalResponseAPIType<IProfileData>>) {
@@ -14,6 +15,9 @@ export const profileAPIUtils = {
 
       const isTokenValid = await jwt.verify(token, process.env.JWT_SECRET || 'secret') as TokenJWTPayload
       if (!isTokenValid) return res.status(422).json({ errors: [{ param: 'origin', msg: 'Неверный токен' }] })
+
+      const existingToken = await TokenModel.findOne({ id: isTokenValid.id }) as IToken
+      if (!existingToken) return res.status(400).json({ errors: [{ param: 'origin', msg: 'Токена нет в базе' }] })
 
       const profileData = await AdminModel.findOne({ id: isTokenValid.id }) as IAdmin
       if (!profileData) return res.status(422).json({ errors: [{ param: 'origin', msg: 'Профиль не найден' }] })
@@ -51,6 +55,9 @@ export const profileAPIUtils = {
 
       const isTokenValid = await jwt.verify(token, process.env.JWT_SECRET || 'secret') as TokenJWTPayload
       if (!isTokenValid) return res.status(422).json({ errors: [{ param: 'origin', msg: 'Неверный токен' }] })
+
+      const existingToken = await TokenModel.findOne({ id: isTokenValid.id }) as IToken
+      if (!existingToken) return res.status(400).json({ errors: [{ param: 'origin', msg: 'Токена нет в базе' }] })
 
       const profileData = await AdminModel.findOne({ id: isTokenValid.id }) as IAdmin
       if (!profileData) return res.status(422).json({ errors: [{ param: 'origin', msg: 'Профиль не найден' }] })

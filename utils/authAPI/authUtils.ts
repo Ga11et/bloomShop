@@ -1,14 +1,14 @@
 import { NextApiResponse } from 'next'
 import { AuthData } from '../../app/types/clientApiTypes'
-import { AdminModelType, AuthUserData, ExtendedRequestType, TokenJWTPayload, TokenModelType, UniversalResponseAPIType } from '../../app/types/serverApiTypes'
-import { AdminModel } from '../models/admin'
+import { AuthUserData, ExtendedRequestType, TokenJWTPayload, TokenModelType, UniversalResponseAPIType } from '../../app/types/serverApiTypes'
+import { AdminModel, IAdmin } from '../models/admin'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import { TokenModel } from '../models/token'
 
 export const authAPIUtils = {
   async post(req: ExtendedRequestType<AuthData>, res: NextApiResponse<UniversalResponseAPIType<AuthUserData>>) {
-    const user: AdminModelType | null = await AdminModel.findOne({ login: req.body.login })
+    const user = await AdminModel.findOne({ login: req.body.login }) as IAdmin
     if (!user) return res.status(400).json({ errors: [{ param: 'login', msg: 'Такого пользователя не существует' }] })
 
     const isPassValid = await bcrypt.compare(req.body.password, user.password)
@@ -21,7 +21,7 @@ export const authAPIUtils = {
     await TokenModel.create({ id: user._id, token: token })
 
     res.setHeader("set-cookie", `token=${token}; samesite=lax; httponly;`)
-    res.status(200).json({ data: { role: user.role, login: user.login, id: user._id } })
+    res.status(200).json({ data: { role: user.role, login: user.login, id: String(user._id) } })
   },
   async get(req: ExtendedRequestType<AuthData>, res: NextApiResponse<UniversalResponseAPIType<AuthUserData>>) {
     const token = req.cookies.token
