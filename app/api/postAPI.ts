@@ -1,7 +1,8 @@
 import { authAPIResponseTest, AuthUserData, UniversalResponseAPIType } from './../types/serverApiTypes';
 import { IPost } from './../../utils/models/post';
-import { AuthData, RegData } from '../types/clientApiTypes'
+import { AuthData, filteredResponse, IPostStatusData, RegData } from '../types/clientApiTypes'
 import { postAPIResponse } from '../types/serverApiTypes'
+import { IProfileData } from '../types/profileSliceTypes';
 
 export const postAPI = {
   async authMe (loginData: AuthData): Promise<authAPIResponseTest> {
@@ -32,5 +33,14 @@ export const postAPI = {
       }
     }
     return 'not ok'
+  },
+  async profileStatus (postData: IPostStatusData): Promise<filteredResponse<IProfileData>> {
+    const response = await fetch('/api/profile/status', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(postData) })
+    const responseData: UniversalResponseAPIType<IProfileData> = await response.json()
+    return {
+      status: response.status,
+      data: responseData.data,
+      errors: responseData.errors
+    }
   }
 }

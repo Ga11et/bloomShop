@@ -16,12 +16,12 @@ export const AsideMenu: FC<AsideMenuPropsType> = ({ items }) => {
 
   return <>
     <Paper elevation={4} sx={{
-      padding: '20px 0',
+      padding: '10px 0',
       height: 'min-content'
     }}>
       <List>
-        {items.map((item, index) => (<>
-          <ListItemButton selected={selectedIndex === index}
+        {items.map((item, index) => (<div key={item.title + index}>
+          <ListItemButton  selected={selectedIndex === index}
             onClick={() => onListItemClick(index, item.handler)} sx={{
               padding: '10px'
             }}
@@ -34,7 +34,7 @@ export const AsideMenu: FC<AsideMenuPropsType> = ({ items }) => {
             <ListItemText primary={item.title} />
           </ListItemButton>
           {index !== items.length - 1 && <Divider variant='inset' component='li' />}
-        </>))}
+        </div>))}
       </List>
     </Paper>
   </>

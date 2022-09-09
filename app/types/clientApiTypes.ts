@@ -11,6 +11,11 @@ export type RegData = {
   secondName: string
   email: string
 }
+export interface IPostStatusData {
+  userId: string
+  newStatus: string
+}
+
 export type PostType = {
   id: string
   title: string

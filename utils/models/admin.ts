@@ -10,7 +10,8 @@ export interface IAdmin {
   secondName: string
   email: string
   role: userRole
-  image?: string
+  image: string
+  status: string
 }
 
 const AdminSchema = new Schema<IAdmin>({
@@ -19,7 +20,9 @@ const AdminSchema = new Schema<IAdmin>({
   firstName: { type: String, required: true },
   secondName: { type: String, required: true },
   email: { type: String, required: true },
-  role: { type: String, required: true, default: 'user' }
+  role: { type: String, required: true, default: 'user' },
+  status: { type: String, required: true, default: 'Статус' },
+  image: { type: String, required: true, default: 'none' },
 })
 
 export const AdminModel = mongoose.models.AdminModel || model<IAdmin>('AdminModel', AdminSchema)
