@@ -1,6 +1,6 @@
 import { Container, Grid, Paper } from '@mui/material'
 import { FC, useEffect } from 'react'
-import { useAppDispatch } from '../../../app/store/hooks'
+import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
 import { ProfileThunks } from '../../../app/store/reducers/profile/profileThunks'
 import { AsideMenu } from '../../../components/shopComponents/layout/asideMenu'
 import { Layout } from '../../../components/shopComponents/layout/layout'
@@ -9,6 +9,7 @@ import { IAsideMenuItem } from '../../../app/types/layoutComponentsTypres'
 import { useRouter } from 'next/router'
 import { ProfileInfo } from '../../../components/shopComponents/profileComponents/profileInfo'
 import { ProfileForm } from '../../../components/shopComponents/profileComponents/profileForm'
+import { WarningZone } from '../../../components/shopComponents/profileComponents/warningZone'
 
 type ProfilePagePropsType = {
   
@@ -17,10 +18,14 @@ const ProfilePage: FC<ProfilePagePropsType> = ({  }) => {
 
   const dispatch = useAppDispatch()
   const router = useRouter()
+  const { isAuth } = useAppSelector(store => store.AuthReducer)
 
   useEffect(() => {
     dispatch(ProfileThunks.getData())
   }, [])
+  useEffect(() => {
+    if (!isAuth) router.push('/shop')
+  }, [isAuth])
 
   const asideMenuItems: IAsideMenuItem[] = [
     { icon: Settings, title: 'Настройки', handler: () => router.push('/shop/profile') }
@@ -41,6 +46,7 @@ const ProfilePage: FC<ProfilePagePropsType> = ({  }) => {
           <Grid container gap={2} >
             <ProfileInfo />
             <ProfileForm />
+            <WarningZone />
           </Grid>
         </Container>
       </Paper>

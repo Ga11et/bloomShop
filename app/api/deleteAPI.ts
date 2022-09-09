@@ -19,5 +19,13 @@ export const deleteAPI = {
       status: response.status,
       errors: responseData.errors
     }
+  },
+  async deleteRegistration () {
+    const response = await fetch('/api/register', { method: 'DELETE' })
+    const responseData: UniversalResponseAPIType<AuthUserData> = await response.json()
+    return {
+      status: response.status,
+      errors: responseData.errors
+    }
   }
 }

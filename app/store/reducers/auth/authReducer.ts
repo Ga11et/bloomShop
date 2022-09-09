@@ -7,13 +7,15 @@ interface IAuthSlice {
   isAuth: boolean
   isAuthLoading: boolean
   isRegLoading: boolean
+  isRegSuccess: boolean
   errors?: ErrorType[]
 }
 
 const initialState: IAuthSlice = {
   isAuth: false,
   isRegLoading: false,
-  isAuthLoading: false
+  isAuthLoading: false,
+  isRegSuccess: false
 }
 
 const AuthReducer = createSlice({
@@ -25,11 +27,12 @@ const AuthReducer = createSlice({
   extraReducers(builder) {
     builder.addCase(authThunks.postRegistration.pending, (state) => {
       state.isRegLoading = true
+      state.isRegSuccess = false
     })
     builder.addCase(authThunks.postRegistration.fulfilled, (state, action) => {
       state.isRegLoading = false
       if (action.payload.status === 200) {
-        state.userData = action.payload.data
+        state.isRegSuccess = true
       }
       if (action.payload.status === 400) {
         state.errors = action.payload.errors
@@ -68,6 +71,20 @@ const AuthReducer = createSlice({
       state.isAuthLoading = true
     })
     builder.addCase(authThunks.getLogout.fulfilled, (state, action) => {
+      state.isAuthLoading = false
+      if (action.payload.status === 200) {
+        state.isAuth = false
+        state.userData = undefined
+      }
+      if (action.payload.status === 400) {
+        state.errors = action.payload.errors
+        console.log(action.payload.errors)
+      }
+    })
+    builder.addCase(authThunks.deleteRegistration.pending, (state) => {
+      state.isAuthLoading = true
+    })
+    builder.addCase(authThunks.deleteRegistration.fulfilled, (state, action) => {
       state.isAuthLoading = false
       if (action.payload.status === 200) {
         state.isAuth = false

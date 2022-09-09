@@ -4,7 +4,7 @@ import { AuthUserData, ExtendedRequestType, TokenJWTPayload, TokenModelType, Uni
 import { AdminModel, IAdmin } from '../models/admin'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
-import { TokenModel } from '../models/token'
+import { IToken, TokenModel } from '../models/token'
 
 export const authAPIUtils = {
   async post(req: ExtendedRequestType<AuthData>, res: NextApiResponse<UniversalResponseAPIType<AuthUserData>>) {
@@ -16,7 +16,7 @@ export const authAPIUtils = {
 
     const token = jwt.sign({ login: user.login, id: user._id, role: user.role }, process.env.JWT_SECRET || 'secret', { expiresIn: 1000*60*60*24 })
 
-    const existingToken = await TokenModel.findOne({ id: user._id })
+    const existingToken = await TokenModel.findById(user._id)
     if (existingToken) await TokenModel.deleteOne({ existingToken })
     await TokenModel.create({ id: user._id, token: token })
 
@@ -31,10 +31,13 @@ export const authAPIUtils = {
     const isTokenValid = jwt.verify(token, process.env.JWT_SECRET || 'secret') as TokenJWTPayload
     if (!isTokenValid) return res.status(400).json({ errors: [{ param: 'origin', msg: 'Неверный токен' }] })
 
-    const existingToken: TokenModelType | null = await TokenModel.findOne({ id: isTokenValid.id })
+    const existingToken = await TokenModel.findOne({ id: isTokenValid.id }) as IToken
     if (!existingToken) return res.status(400).json({ errors: [{ param: 'origin', msg: 'Токена нет в базе' }] })
 
-    res.status(200).json({ data: { role: isTokenValid.role, login: isTokenValid.login, id: isTokenValid.id } })
+    const user = await AdminModel.findById(isTokenValid.id) as IAdmin
+    if (!user) return res.status(400).json({ errors: [{ param: 'origin', msg: 'Пользователя нет' }] })
+
+    res.status(200).json({ data: { role: user.role, login: user.login, id: String(user._id) } })
   },
   async delete(req: ExtendedRequestType<AuthData>, res: NextApiResponse<UniversalResponseAPIType<{}>>) {
     const token = req.cookies.token

@@ -19,7 +19,7 @@ export const profileAPIUtils = {
       const existingToken = await TokenModel.findOne({ id: isTokenValid.id }) as IToken
       if (!existingToken) return res.status(400).json({ errors: [{ param: 'origin', msg: 'Токена нет в базе' }] })
 
-      const profileData = await AdminModel.findOne({ id: isTokenValid.id }) as IAdmin
+      const profileData = await AdminModel.findById(isTokenValid.id) as IAdmin
       if (!profileData) return res.status(422).json({ errors: [{ param: 'origin', msg: 'Профиль не найден' }] })
 
       res.status(200).json({ data: {
@@ -59,11 +59,11 @@ export const profileAPIUtils = {
       const existingToken = await TokenModel.findOne({ id: isTokenValid.id }) as IToken
       if (!existingToken) return res.status(400).json({ errors: [{ param: 'origin', msg: 'Токена нет в базе' }] })
 
-      const profileData = await AdminModel.findOne({ id: isTokenValid.id }) as IAdmin
+      const profileData = await AdminModel.findById(isTokenValid.id) as IAdmin
       if (!profileData) return res.status(422).json({ errors: [{ param: 'origin', msg: 'Профиль не найден' }] })
 
       await AdminModel.updateOne({ id: isTokenValid.id }, { firstName, secondName, login, email })
-      const newProfileData = await AdminModel.findOne({ id: isTokenValid.id }) as IAdmin
+      const newProfileData = await AdminModel.findById(isTokenValid.id) as IAdmin
 
       res.status(200).json({ data: {
         firstName: newProfileData.firstName,
@@ -87,11 +87,11 @@ export const profileAPIUtils = {
       const isTokenValid = await jwt.verify(token, process.env.JWT_SECRET || 'secret') as TokenJWTPayload
       if (!isTokenValid) return res.status(422).json({ errors: [{ param: 'origin', msg: 'Неверный токен' }] })
 
-      const profileData = await AdminModel.findOne({ id: isTokenValid.id }) as IAdmin
+      const profileData = await AdminModel.findById(isTokenValid.id) as IAdmin
       if (!profileData) return res.status(422).json({ errors: [{ param: 'origin', msg: 'Профиль не найден' }] })
 
       await AdminModel.updateOne({ id: isTokenValid.id }, { status: newStatus })
-      const newProfileData = await AdminModel.findOne({ id: isTokenValid.id }) as IAdmin
+      const newProfileData = await AdminModel.findById(isTokenValid.id) as IAdmin
 
       res.status(200).json({ data: {
         firstName: newProfileData.firstName,

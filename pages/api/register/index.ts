@@ -17,6 +17,11 @@ export default async (req: ExtendedRequestType<RegData>, res: NextApiResponse) =
       case 'POST':
         regAPIUtils.post(req, res)
         break;
+      case 'DELETE':
+        regAPIUtils.delete(req, res)
+        break
+      case 'PUT':
+        break
       default:
         res.status(200).json('work')
         break;

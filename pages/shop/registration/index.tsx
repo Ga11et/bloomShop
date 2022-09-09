@@ -1,5 +1,5 @@
 import { KeyOutlined } from '@mui/icons-material'
-import { Avatar, Button, Grid, Link, Paper, TextField, Typography } from '@mui/material'
+import { Alert, Avatar, Button, Grid, Grow, Link, Paper, TextField, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import { useRouter } from 'next/router'
 import { FC, FormEvent, useEffect, useState } from 'react'
@@ -15,11 +15,16 @@ const RegistrationPage: FC<RegistrationPagePropsType> = ({  }) => {
   const dispatch = useAppDispatch()
   const router = useRouter()
   const [localErrors, setLocalErrors] = useState<ErrorType[]>([])
-  const { isAuthLoading, errors } = useAppSelector(store => store.AuthReducer)
+  const [isAlertShow, setIsAlertShow] = useState(false)
+  const { isAuthLoading, errors, isRegSuccess } = useAppSelector(store => store.AuthReducer)
 
   useEffect(() => {
     if (errors) setLocalErrors(errors)
   }, [errors])
+  useEffect(() => {
+    console.log(isRegSuccess)
+    if (isRegSuccess) setIsAlertShow(true)
+  }, [isRegSuccess])
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -33,6 +38,14 @@ const RegistrationPage: FC<RegistrationPagePropsType> = ({  }) => {
   }
 
   return <>
+    <Grow in={isAlertShow} appear>
+      <Alert severity='success' sx={{
+        position: 'fixed',
+        left: 20,
+        bottom: 20,
+        minWidth: '200px'
+      }} onClose={() => setIsAlertShow(false)}>Success!</Alert>
+    </Grow>
     <Grid container sx={{ height: '100vh' }}>
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square sx={{
         display: 'flex',

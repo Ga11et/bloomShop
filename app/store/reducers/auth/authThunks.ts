@@ -12,6 +12,13 @@ export const authThunks = {
       return response
     }
   ),
+  deleteRegistration: createAsyncThunk(
+    'deleteRegistration',
+    async () => {
+      const response = await deleteAPI.deleteRegistration()
+      return response
+    }
+  ),
   postLogin: createAsyncThunk(
     'postLogin',
     async (authData: AuthData) => {
