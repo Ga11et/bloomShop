@@ -49,6 +49,19 @@ export const ProfileSlice = createSlice({
         state.errors = action.payload.errors ? action.payload.errors : []
       }
     })
+    builder.addCase(ProfileThunks.updateProfile.pending, (state) => {
+      state.isLoaded = true
+      state.errors = []
+    })
+    builder.addCase(ProfileThunks.updateProfile.fulfilled, (state, action) => {
+      state.isLoaded = false
+      if (action.payload.status === 200 && action.payload.data) {
+        state.profileData = action.payload.data
+      }
+      if (action.payload.status === 422) {
+        state.errors = action.payload.errors ? action.payload.errors : []
+      }
+    })
   },
 })
 

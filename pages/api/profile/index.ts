@@ -1,10 +1,10 @@
 import { IProfileData } from './../../../app/types/profileSliceTypes';
 import mongoose from 'mongoose'
-import { NextApiResponse } from 'next'
+import { NextApiRequest, NextApiResponse } from 'next'
 import { ExtendedRequestType, UniversalResponseAPIType } from '../../../app/types/serverApiTypes'
 import { profileAPIUtils } from '../../../utils/api/profile';
 
-export default async (req: ExtendedRequestType<{}>, res: NextApiResponse<UniversalResponseAPIType<IProfileData>>) => {
+export default async (req: NextApiRequest, res: NextApiResponse<UniversalResponseAPIType<IProfileData>>) => {
 
   const mongoDBUrl = process.env.MONGODB_CONNECT_TOKEN || ''
 
@@ -20,6 +20,7 @@ export default async (req: ExtendedRequestType<{}>, res: NextApiResponse<Univers
       case 'DELETE':
         break
       case 'PUT':
+        await profileAPIUtils.put(req, res)
         break
       default:
         break;

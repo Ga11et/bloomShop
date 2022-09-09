@@ -15,6 +15,12 @@ export interface IPostStatusData {
   userId: string
   newStatus: string
 }
+export interface IUpdateProfileData {
+  firstName: string
+  secondName: string
+  email: string
+  login: string
+}
 
 export type PostType = {
   id: string

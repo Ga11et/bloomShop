@@ -15,7 +15,7 @@ export const AsideMenu: FC<AsideMenuPropsType> = ({ items }) => {
   }
 
   return <>
-    <Paper elevation={4} sx={{
+    <Paper elevation={5} sx={{
       padding: '10px 0',
       height: 'min-content'
     }}>
