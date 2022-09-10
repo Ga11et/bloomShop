@@ -1,7 +1,7 @@
 import { IProfileData } from './../../../app/types/profileSliceTypes';
 import mongoose from 'mongoose'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { ExtendedRequestType, UniversalResponseAPIType } from '../../../app/types/serverApiTypes'
+import { UniversalResponseAPIType } from '../../../app/types/serverApiTypes'
 import { profileAPIUtils } from '../../../utils/api/profile';
 
 export default async (req: NextApiRequest, res: NextApiResponse<UniversalResponseAPIType<IProfileData>>) => {
@@ -30,7 +30,4 @@ export default async (req: NextApiRequest, res: NextApiResponse<UniversalRespons
     console.log(error)
     res.status(400).json({ errors: [{ param: 'origin', msg: String(error) }] })
   }
-
-  
-
 }

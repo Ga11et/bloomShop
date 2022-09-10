@@ -1,9 +1,19 @@
 import { NextApiRequest } from 'next';
 import { userRole } from '../../utils/models/admin';
 import { filteredResponse } from './clientApiTypes';
-import { IProfileData } from './profileSliceTypes';
 export interface ExtendedRequestType<B> extends NextApiRequest {
   body: B
+}
+
+// interfaces for APIResponse
+export interface IProductR {
+  id: string
+  name: string
+  price: string
+  image: string[]
+  description: string
+  amount: number
+  code: number
 }
 
 export type ErrorType = {
@@ -32,13 +42,6 @@ export type TokenModelType = {
   id: string
   _id: string
 }
-export type ProductModelType = {
-  _id: string
-  name: string
-  price: string
-  image: string
-  description: string
-}
 export type TokenJWTPayload = {
   id: string
   login: string
@@ -49,6 +52,18 @@ export type AuthUserData = {
   login: string
   role: userRole
 }
+export type ReviewType = {
+  id: string
+  authorId: string
+  authorName: string
+  score: number
+  productId: string
+  productName: string
+  positive: string
+  negative: string
+  comment: string
+}
+
 export type postAPIResponse = filteredResponse<PostModelType[]> | 'not ok'
 export type authAPIResponse = filteredResponse<AuthUserData> | 'not ok'
 export type authAPIResponseTest = filteredResponse<AuthUserData>

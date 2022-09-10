@@ -1,8 +1,9 @@
-import { authAPIResponseTest, AuthUserData, UniversalResponseAPIType } from './../types/serverApiTypes';
+import { authAPIResponseTest, AuthUserData, UniversalResponseAPIType, IProductR } from './../types/serverApiTypes';
 import { IPost } from './../../utils/models/post';
-import { AuthData, filteredResponse, IPostStatusData, RegData } from '../types/clientApiTypes'
+import { AuthData, filteredResponse, IPostProductType, IPostStatusData, RegData } from '../types/clientApiTypes'
 import { postAPIResponse } from '../types/serverApiTypes'
 import { IProfileData } from '../types/profileSliceTypes';
+import { IProduct } from '../../utils/models/product';
 
 export const postAPI = {
   async authMe (loginData: AuthData): Promise<authAPIResponseTest> {
@@ -37,6 +38,15 @@ export const postAPI = {
   async profileStatus (postData: IPostStatusData): Promise<filteredResponse<IProfileData>> {
     const response = await fetch('/api/profile/status', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(postData) })
     const responseData: UniversalResponseAPIType<IProfileData> = await response.json()
+    return {
+      status: response.status,
+      data: responseData.data,
+      errors: responseData.errors
+    }
+  },
+  async product (postData: IPostProductType): Promise<filteredResponse<IProductR[]>> {
+    const response = await fetch('/api/product', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(postData) })
+    const responseData: UniversalResponseAPIType<IProductR[]> = await response.json()
     return {
       status: response.status,
       data: responseData.data,

@@ -1,4 +1,4 @@
-import { Container, Grid, Paper } from '@mui/material'
+import { Container, Grid, Paper, Typography } from '@mui/material'
 import { FC, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
 import { ProfileThunks } from '../../../app/store/reducers/profile/profileThunks'
@@ -37,6 +37,11 @@ const ProfilePage: FC<ProfilePagePropsType> = ({  }) => {
         padding: '20px 0',
         backgroundColor: (t) => t.palette.grey[800]
       }}>
+        <Container maxWidth='xl'>
+          <Typography variant='h4' pb={5} pt={3} component='h1'>
+            Страница аккаунта
+          </Typography>
+        </Container>
         <Container maxWidth='xl' sx={{
           display: 'grid',
           gridTemplateColumns: '300px 1fr',

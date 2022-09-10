@@ -1,17 +1,22 @@
-import mongoose, { model, Schema } from 'mongoose'
+import mongoose, { Model, model, ObjectId, Schema } from 'mongoose'
 
-interface IProduct {
+export interface IProduct {
+  _id: ObjectId
+  code: number
   name: string
   price: string
-  image: string
+  images: string[]
   description: string
+  amount: number
 }
 
 const ProductSchema = new Schema<IProduct>({
-  name: { Type: String, required: true },
-  price: { Type: String, required: true },
-  image: { Type: String, required: true },
-  description: { Type: String, required: true }
-})
+  name: String,
+  price: String,
+  images: [String],
+  description: String,
+  amount: Number,
+  code: Number
+}, { capped: { autoIndexId: true } })
 
-export const ProductModel = mongoose.models.ProductModel || model<IProduct>('ProductModel', ProductSchema)
+export const ProductModel = mongoose.models.ProductModel as Model<IProduct, {}, {}, {}, IProduct> || model<IProduct>('ProductModel', ProductSchema)

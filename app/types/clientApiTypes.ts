@@ -21,25 +21,20 @@ export interface IUpdateProfileData {
   email: string
   login: string
 }
+export interface IPostProductType {
+  name: string
+  description: string
+  price: number
+  image: string
+  amount: number
+}
 
 export type PostType = {
   id: string
   title: string
   description: string
 }
-export type ProductType = {
-  data: {
-    id: string
-    name: string
-    price: string
-    image: string
-    description: string
-  }
-  user: {
-    id: string
-    login: string
-  }
-}
+
 export type filteredResponse<P> = {
   status: number
   data?: P
