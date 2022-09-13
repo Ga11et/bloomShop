@@ -1,9 +1,9 @@
 import React, { FC, useEffect } from 'react'
 import { AppBar, Container, Toolbar, Box, Menu, Typography, IconButton, MenuItem, Button, Tooltip, Avatar } from '@mui/material'
-import { MenuSVG } from '../../svgIcons/menu'
 import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
 import { useRouter } from 'next/router'
 import { authThunks } from '../../../app/store/reducers/auth/authThunks'
+import { MenuSharp } from '@mui/icons-material'
 
 type HeaderPropsType = {
   
@@ -21,7 +21,10 @@ export const Header: FC<HeaderPropsType> = ({  }) => {
     dispatch(authThunks.getAuth())
   }, [])
 
-  const pages = ['Магазин', 'Цены', 'Блог']
+  const pages = [
+    { title: 'Магазин', handler: () => router.push('/shop') },
+    { title: 'Цены', handler: () => router.push('/shop') },
+    { title: 'Блог', handler: () => router.push('/shop') }]
   const accountMenu = userData?.role === 'admin'
     ? [{ title: 'Админка', handler: () => router.push('/shop/admin') },
     { title: 'Аккаунт', handler: () => router.push('/shop/profile') },
@@ -31,9 +34,9 @@ export const Header: FC<HeaderPropsType> = ({  }) => {
     { title: 'Корзина', handler: () => router.push('/shop/basket') },
     { title: 'Выйти', handler: () => dispatch(authThunks.getLogout()) }]
 
-  const onNavigationClick = (page: string) => {
-    console.log(page)
+  const onNavigationClick = (handler: Function) => {
     setMenuAnchor(null)
+    handler()
   }
   const onSettingsClick = (handler: Function) => {
     setAccountMenuAnchor(null)
@@ -41,7 +44,9 @@ export const Header: FC<HeaderPropsType> = ({  }) => {
   }
 
   return <>
-    <AppBar position='static' >
+    <AppBar position='static' elevation={5} sx={{
+      backgroundColor: (t) => t.palette.background.paper
+    }} >
       <Container maxWidth='xl'>
         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
           {/* Mobile Menu */}
@@ -50,7 +55,7 @@ export const Header: FC<HeaderPropsType> = ({  }) => {
               size="large"
               onClick={(event) => setMenuAnchor(event.currentTarget)}
             >
-              <MenuSVG className='fill-white w-8 h-8' />
+              <MenuSharp  />
             </IconButton>
             <Menu
               sx={{ display: { md: 'none', xs: 'flex' } }}
@@ -62,22 +67,22 @@ export const Header: FC<HeaderPropsType> = ({  }) => {
               open={Boolean(menuAnchor)}
               onClose={() => setMenuAnchor(null)}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={() => onNavigationClick(page)}>
-                  <Typography sx={{ paddingRight: '1rem' }}>{page}</Typography>
+              {pages.map((page, index) => (
+                <MenuItem key={page.title + index} onClick={() => onNavigationClick(page.handler)}>
+                  <Typography sx={{ paddingRight: '1rem' }}>{page.title}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
           {/* Desktop Menu */}
           <Box sx={{ display: { md: 'flex', xs: 'none' } }}>
-            {pages.map((page) => (
+            {pages.map((page, index) => (
               <Button
-                key={page}
-                onClick={() => console.log(page)}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                key={page.title + index}
+                onClick={() => page.handler()}
+                sx={{ my: 2, color: 'black', display: 'block' }}
               >
-                {page}
+                {page.title}
               </Button>
             ))}
           </Box>
@@ -108,7 +113,7 @@ export const Header: FC<HeaderPropsType> = ({  }) => {
               ))}
             </Menu>
           </Box>
-          :<Button variant='outlined' onClick={() => router.push('/shop/login')}>Войти</Button>}
+          :<Button color='primary' variant='outlined' onClick={() => router.push('/shop/login')}>Войти</Button>}
         </Toolbar>
       </Container>
     </AppBar>

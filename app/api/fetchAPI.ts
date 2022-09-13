@@ -1,3 +1,4 @@
+import { IProductR } from './../types/serverApiTypes';
 import { IProfileData } from './../types/profileSliceTypes';
 import { authAPIResponseTest, AuthUserData, postAPIResponse, UniversalResponseAPIType } from '../types/serverApiTypes';
 import { filteredResponse } from '../types/clientApiTypes';
@@ -26,6 +27,15 @@ export const fetchAPI = {
   async profileData (): Promise<filteredResponse<IProfileData>> {
     const response = await fetch('/api/profile')
     const responseData: UniversalResponseAPIType<IProfileData> = await response.json()
+    return {
+      status: response.status,
+      data: responseData.data,
+      errors: responseData.errors
+    }
+  },
+  async products (): Promise<filteredResponse<IProductR[]>> {
+    const response = await fetch('/api/product')
+    const responseData: UniversalResponseAPIType<IProductR[]> = await response.json()
     return {
       status: response.status,
       data: responseData.data,

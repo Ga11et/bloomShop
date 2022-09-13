@@ -8,8 +8,11 @@ const HomePage: FC<AppProps> = ({ Component, pageProps }) => {
   
   const darkTheme = createTheme({
     palette: {
-      mode: 'dark',
+      mode: 'light',
     },
+    typography: {
+      fontFamily: 'Montserrat'
+    }
   });
 
   return <>

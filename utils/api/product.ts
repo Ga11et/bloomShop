@@ -7,13 +7,21 @@ import { ProductModel } from '../models/product';
 import { AppModel, IAppModel } from '../models/app';
 
 export const productAPIUtils = {
-  async getAll (req: ExtendedRequestType<{}>, res: NextApiResponse) {
+  async getAll (req: ExtendedRequestType<{}>, res: NextApiResponse<UniversalResponseAPIType<IProductR[]>>) {
     try {
       const products = await ProductModel.find()
-      res.status(200).json(products)
+      res.status(200).json({ data: products.map(product => ({
+        id: String(product._id),
+        name: product.name,
+        description: product.description,
+        amount: product.amount,
+        code: product.code,
+        image: product.images,
+        price: product.price
+      })) })
     } catch (error) {
       console.log('utils ' + error)
-      res.status(400).json('utils ' + error)
+      res.status(400).json({ errors: [{ param: 'origin', msg: String(error) }] })
     }
   },
   async post (req: ExtendedRequestType<IPostProductType>, res: NextApiResponse<UniversalResponseAPIType<IProductR[]>>) {

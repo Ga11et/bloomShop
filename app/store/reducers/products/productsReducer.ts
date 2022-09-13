@@ -39,6 +39,20 @@ const ProductsSlice = createSlice({
         state.errors = action.payload.errors
       }
     })
+    builder.addCase(ProductThunks.getProducts.pending, (state) => {
+      state.isLoaded = false
+      state.products = []
+      state.errors = []
+    })
+    builder.addCase(ProductThunks.getProducts.fulfilled, (state, action) => {
+      state.isLoaded = true
+      if (action.payload.status === 200 && action.payload.data) {
+        state.products = action.payload.data
+      }
+      if (action.payload.status !== 200 && action.payload.errors) {
+        state.errors = action.payload.errors
+      }
+    })
   },
 })
 
