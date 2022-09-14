@@ -41,5 +41,23 @@ export const fetchAPI = {
       data: responseData.data,
       errors: responseData.errors
     }
+  },
+  async productPaths (): Promise<filteredResponse<string[]>> {
+    const response = await fetch(process.env.URL + '/api/product/paths')
+    const responseData: UniversalResponseAPIType<string[]> = await response.json()
+    return {
+      status: response.status,
+      data: responseData.data,
+      errors: responseData.errors
+    }
+  },
+  async productById (id: string): Promise<filteredResponse<IProductR>> {
+    const response = await fetch(process.env.URL + `/api/product/${id}`)
+    const responseData: UniversalResponseAPIType<IProductR> = await response.json()
+    return {
+      status: response.status,
+      data: responseData.data,
+      errors: responseData.errors
+    }
   }
 }

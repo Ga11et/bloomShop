@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from 'react'
-import { AppBar, Container, Toolbar, Box, Menu, Typography, IconButton, MenuItem, Button, Tooltip, Avatar } from '@mui/material'
+import { AppBar, Container, Toolbar, Box, Menu, Typography, IconButton, MenuItem, Button, Tooltip, Avatar, Paper } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
 import { useRouter } from 'next/router'
 import { authThunks } from '../../../app/store/reducers/auth/authThunks'
@@ -44,8 +44,9 @@ export const Header: FC<HeaderPropsType> = ({  }) => {
   }
 
   return <>
-    <AppBar position='static' elevation={5} sx={{
-      backgroundColor: (t) => t.palette.background.paper
+    <AppBar component={Paper} square elevation={5} sx={{
+      backgroundColor: (t) => t.palette.background.paper,
+      position: 'sticky'
     }} >
       <Container maxWidth='xl'>
         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>

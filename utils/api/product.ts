@@ -24,6 +24,35 @@ export const productAPIUtils = {
       res.status(400).json({ errors: [{ param: 'origin', msg: String(error) }] })
     }
   },
+  async getAllPaths (req: ExtendedRequestType<{}>, res: NextApiResponse<UniversalResponseAPIType<string[]>>) {
+    try {
+      const products = await ProductModel.find()
+      res.status(200).json({ data: products.map(product => product._id.toString()) })
+    } catch (error) {
+      console.log('utils ' + error)
+      res.status(400).json({ errors: [{ param: 'origin', msg: String(error) }] })
+    }
+  },
+  async getOneProduct (req: ExtendedRequestType<{}>, res: NextApiResponse<UniversalResponseAPIType<IProductR>>) {
+    try {
+      const { productId } = req.query
+      const product = await ProductModel.findById(productId)
+      if (!product) return res.status(400).json({ errors: [{ param: 'origin', msg: 'Продукта с данным id не найдено' }] })
+
+      res.status(200).json({ data: { 
+        id: product._id.toString(),
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        code: product.code,
+        amount: product.amount,
+        image: product.images,
+      } })
+    } catch (error) {
+      console.log('utils ' + error)
+      res.status(400).json({ errors: [{ param: 'origin', msg: String(error) }] })
+    }
+  },
   async post (req: ExtendedRequestType<IPostProductType>, res: NextApiResponse<UniversalResponseAPIType<IProductR[]>>) {
     try {
       const { token } = req.cookies
