@@ -1,11 +1,8 @@
-import { Box, Typography } from '@mui/material'
-import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next'
+import { Box, CircularProgress, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
-import { FC, useEffect, useState } from 'react'
-import { fetchAPI } from '../../../app/api/fetchAPI'
-import { useAppSelector } from '../../../app/store/hooks'
-import { IProductR } from '../../../app/types/serverApiTypes'
-import { DropAlert } from '../../../components/shopComponents/layout/alert'
+import { FC, useEffect } from 'react'
+import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
+import { ProductThunks } from '../../../app/store/reducers/products/productThunks'
 import { BackPaper } from '../../../components/shopComponents/layout/backPaper'
 import { Layout } from '../../../components/shopComponents/layout/layout'
 import { ProductChangeForm } from '../../../components/shopComponents/productComponents/changeForm'
@@ -13,28 +10,36 @@ import { ProductDeleteForm } from '../../../components/shopComponents/productCom
 import { ProductInfoCard } from '../../../components/shopComponents/productComponents/mainInfoCard'
 
 type ProductPagePropsType = {
-  content?: IProductR
 }
-const ProductPage: FC<ProductPagePropsType> = ({ content }) => {
+const ProductPage: FC<ProductPagePropsType> = ({ }) => {
 
   const router = useRouter()
+  const dispatch = useAppDispatch()
   const { productId } = router.query
+  const { activeProduct, isLoaded } = useAppSelector(store => store.ProductsReducer)
+
+  useEffect(() => {
+    if ( typeof productId === 'string') {
+      dispatch(ProductThunks.getOneProduct(productId))
+    }
+  }, [productId])
 
   return <>
     <Layout>
       <BackPaper>
-        {content ? <>
+        {isLoaded === false ? <CircularProgress />
+        : activeProduct ? <>
           <Typography variant='h4' component='h1' pb={5}>
-            {content.name}
+            {activeProduct.name}
           </Typography>
           <Box sx={{
             display: 'grid',
             gridTemplateColumns: '1fr',
             gap: '20px'
           }}>
-            <ProductInfoCard content={content} />
-            <ProductChangeForm content={content} />
-            <ProductDeleteForm content={content} />
+            <ProductInfoCard content={activeProduct} />
+            <ProductChangeForm content={activeProduct} />
+            <ProductDeleteForm content={activeProduct} />
           </Box>
         </> : <>
           no content {productId}
@@ -42,40 +47,6 @@ const ProductPage: FC<ProductPagePropsType> = ({ content }) => {
       </BackPaper>
     </Layout>
   </>
-}
-
-// export const getStaticPaths: GetStaticPaths = async () => {
-
-//   const responseData = await fetchAPI.productPaths()
-//   let paths = []
-//   if (responseData.data) {
-//     paths = responseData.data.map(product => ({ params: { productId: product } }))
-//   } else {
-//     paths = [{ params: { productId: '1' } }]
-//   }
-
-//   return {
-//     paths: paths,
-//     fallback: false
-//   }
-// }
-
-// export const getStaticProps: GetStaticProps<{ content?: IProductR }, { productId: string }> = async ({ params }) => {
-
-//   const response = await fetchAPI.productById(params ? params.productId : '1')
-
-//   return {
-//     props: { content: response.data }
-//   }
-// }
-
-export const getServerSideProps: GetServerSideProps<{ content?: IProductR | null }, { productId: string }> = async ({ params }) => {
-
-  const response = params ? await fetchAPI.productById(params.productId) : { data: null }
-
-  return {
-    props: { content: response.data ? response.data : null }
-  }
 }
 
 export default ProductPage
