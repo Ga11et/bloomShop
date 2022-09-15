@@ -1,6 +1,6 @@
 import { Button, Card, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
-import { FC, useState } from 'react'
+import { FC, MouseEvent, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
 import { ProductThunks } from '../../../app/store/reducers/products/productThunks'
 import { IProductR } from '../../../app/types/serverApiTypes'
@@ -16,7 +16,8 @@ export const ProductDeleteForm: FC<ProductDeleteFormPropsType> = ({ content }) =
   const { userData } = useAppSelector(store => store.AuthReducer)
   const [isAlertShow, setIsAlertShow] = useState(false)
 
-  const buttonHandler = async () => {
+  const buttonHandler = async (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
     const res = await dispatch(ProductThunks.deleteProduct(content))
     if (res.type === 'deleteProduct/fulfilled') {
       setIsAlertShow(true)
