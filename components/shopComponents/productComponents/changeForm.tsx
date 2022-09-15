@@ -1,6 +1,8 @@
 import { Box, Button, Card, TextField, Typography } from '@mui/material'
 import { FC, FormEvent } from 'react'
-import { useAppSelector } from '../../../app/store/hooks'
+import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
+import { AlertSlice } from '../../../app/store/reducers/alerts/alertsReducer'
+import { ProductThunks } from '../../../app/store/reducers/products/productThunks'
 import { IProductR } from '../../../app/types/serverApiTypes'
 
 type ProductChangeFormPropsType = {
@@ -8,10 +10,21 @@ type ProductChangeFormPropsType = {
 }
 export const ProductChangeForm: FC<ProductChangeFormPropsType> = ({ content }) => {
 
+  const dispatch = useAppDispatch()
   const { userData } = useAppSelector(store => store.AuthReducer)
 
-  const submitHandler = (event: FormEvent<HTMLDivElement>) => {
+  const submitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    const data = new FormData(event.currentTarget)
+    const name = data.get('name') as string
+    const description = data.get('description') as string
+    const price = data.get('price') as number | null
+    const amount = data.get('amount') as number | null
+    if (name && description && amount && price) {
+      const res = await dispatch(ProductThunks.updateProduct({ id: content.id, name, description, amount, price }))
+      if (res.type === 'updateProduct/fulfilled')
+        dispatch(AlertSlice.actions.addAlert({ id: Date.now().toString(), title: 'Продукт успешно изменен', type: 'success' }))
+    }
   }
 
   return <>

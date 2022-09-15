@@ -82,6 +82,20 @@ const ProductsSlice = createSlice({
         state.errors = action.payload.errors
       }
     })
+    builder.addCase(ProductThunks.updateProduct.pending, (state) => {
+      state.isLoaded = false
+      state.errors = []
+    })
+    builder.addCase(ProductThunks.updateProduct.fulfilled, (state, action) => {
+      state.isLoaded = true
+      if (action.payload.status === 200 && action.payload.data) {
+        state.products = action.payload.data
+        state.activeProduct = action.payload.data.find(product => product.id === state.activeProduct?.id) || null
+      }
+      if (action.payload.status !== 200 && action.payload.errors) {
+        state.errors = action.payload.errors
+      }
+    })
   }
 })
 

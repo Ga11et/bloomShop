@@ -2,9 +2,9 @@ import { Button, Card, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import { FC, MouseEvent, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
+import { AlertSlice } from '../../../app/store/reducers/alerts/alertsReducer'
 import { ProductThunks } from '../../../app/store/reducers/products/productThunks'
 import { IProductR } from '../../../app/types/serverApiTypes'
-import { DropAlert } from '../layout/alert'
 
 type ProductDeleteFormPropsType = {
   content: IProductR
@@ -14,21 +14,16 @@ export const ProductDeleteForm: FC<ProductDeleteFormPropsType> = ({ content }) =
   const dispatch = useAppDispatch()
   const router = useRouter()
   const { userData } = useAppSelector(store => store.AuthReducer)
-  const [isAlertShow, setIsAlertShow] = useState(false)
 
   const buttonHandler = async (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
     const res = await dispatch(ProductThunks.deleteProduct(content))
     if (res.type === 'deleteProduct/fulfilled') {
-      setIsAlertShow(true)
-      setTimeout(() => {
-        router.push('/shop')
-      }, 2000);
+      dispatch(AlertSlice.actions.addAlert({ id: Date.now().toString(), title: 'Продукс успешно удален', type: 'success' }))
+      router.push('/shop')
     }
   }
 
   return <>
-    <DropAlert title='Удаление товара прошло удачно, дождитесь перезагрузки страницы' isShow={isAlertShow} setClose={() => setIsAlertShow(false)} />
     {userData && userData.role === 'admin' && <>
       <Card elevation={5} sx={{
         padding: '20px'

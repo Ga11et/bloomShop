@@ -1,20 +1,21 @@
 import { Alert, Grow } from '@mui/material'
-import { FC } from 'react'
+import { FC, SyntheticEvent } from 'react'
+import { useAppDispatch } from '../../../app/store/hooks'
+import { AlertSlice } from '../../../app/store/reducers/alerts/alertsReducer'
+import { IAlert } from '../../../app/types/alertSliceTypes'
 
 type DropAlertPropsType = {
-  isShow: boolean
-  setClose: Function
-  title: string
+  content: IAlert
 }
-export const DropAlert: FC<DropAlertPropsType> = ({ isShow, setClose, title }) => {
+export const DropAlert: FC<DropAlertPropsType> = ({ content }) => {
+
+  const dispatch = useAppDispatch()
+
   return <>
-    <Grow in={isShow} appear>
-      <Alert severity='success' sx={{
-        position: 'fixed',
-        left: 20,
-        bottom: 20,
-        minWidth: '200px'
-      }} onClose={() => setClose(false)}>{title}</Alert>
+    <Grow in={true} appear>
+      <Alert variant='outlined' severity={content.type} sx={{
+        minWidth: '300px'
+      }} onClose={() => dispatch(AlertSlice.actions.deleteAlert(content.id))}>{content.title}</Alert>
     </Grow>
   </>
 }

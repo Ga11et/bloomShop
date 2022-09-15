@@ -1,7 +1,7 @@
 import { ProductMapping } from './../mapping/product';
 import { IProduct } from './../models/product';
 import { IProductR } from '../../app/types/serverApiTypes';
-import { IPostProductType } from '../../app/types/clientApiTypes';
+import { IPostProductType, IUpdateProduct } from '../../app/types/clientApiTypes';
 import { NextApiResponse } from 'next';
 import { ExtendedRequestType, UniversalResponseAPIType } from '../../app/types/serverApiTypes';
 import { ProductModel } from '../models/product';
@@ -96,7 +96,22 @@ export const productAPIUtils = {
     const products = await ProductModel.find()
     res.status(200).json({ data: ProductMapping.modelToResponse(products) })
   },
-  async put (req: ExtendedRequestType<IPostProductType>, res: NextApiResponse) {
+  async changeOneProduct (req: ExtendedRequestType<IUpdateProduct>, res: NextApiResponse<UniversalResponseAPIType<IProductR[]>>) {
+    const { token } = req.cookies
+    const { productId } = req.query
+    const { name, description, amount, price } = req.body
 
+    if (!token) return res.status(401).json({ errors: [{ param: 'origin', msg: 'Нет токена' }] })
+  
+    const isTokenValid = await TokenUtils.isTokenValid(token)
+    if (!isTokenValid) return res.status(401).json({ errors: [{ param: 'origin', msg: 'Токен не подходит' }] })
+  
+    const tokenData = await TokenUtils.isTokenExist(token)
+    if (!tokenData) return res.status(401).json({ errors: [{ param: 'origin', msg: 'Токена нет в базе' }] })
+
+    await ProductModel.findByIdAndUpdate(productId, { name, description, amount, price })
+
+    const products = await ProductModel.find()
+    res.status(200).json({ data: ProductMapping.modelToResponse(products) })
   }
 }

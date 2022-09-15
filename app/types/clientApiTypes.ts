@@ -11,6 +11,7 @@ export type RegData = {
   secondName: string
   email: string
 }
+// Profile Interfaces
 export interface IPostStatusData {
   userId: string
   newStatus: string
@@ -21,12 +22,20 @@ export interface IUpdateProfileData {
   email: string
   login: string
 }
+// Product Interfaces
 export interface IPostProductType {
   name: string
   description: string
   price: number
   image: string
   amount: number
+}
+export interface IUpdateProduct {
+  name: string
+  description: string
+  price: number
+  amount: number
+  id: string
 }
 
 export type PostType = {

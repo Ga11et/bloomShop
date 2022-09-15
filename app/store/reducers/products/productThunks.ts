@@ -1,6 +1,7 @@
+import { updateAPI } from './../../../api/updateAPI';
 import { IProductR } from './../../../types/serverApiTypes';
 import { postAPI } from './../../../api/postAPI';
-import { IPostProductType } from './../../../types/clientApiTypes';
+import { IPostProductType, IUpdateProduct } from './../../../types/clientApiTypes';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchAPI } from '../../../api/fetchAPI';
 import { deleteAPI } from '../../../api/deleteAPI';
@@ -30,6 +31,13 @@ export const ProductThunks = {
     'deleteProduct',
     async (productData: IProductR) => {
       const response = await deleteAPI.product(productData)
+      return response
+    }
+  ),
+  updateProduct: createAsyncThunk(
+    'updateProduct',
+    async (productData: IUpdateProduct) => {
+      const response = await updateAPI.product(productData)
       return response
     }
   )

@@ -19,7 +19,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       case 'DELETE':
         break;
       case 'PUT':
-        await productAPIUtils.put(req, res)
         break;
       default:
         break;
