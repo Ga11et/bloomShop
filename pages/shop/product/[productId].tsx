@@ -1,12 +1,15 @@
-import { Box, Grid, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { GetStaticPaths, GetStaticProps } from 'next'
-import { FC } from 'react'
+import { useRouter } from 'next/router'
+import { FC, useEffect, useState } from 'react'
 import { fetchAPI } from '../../../app/api/fetchAPI'
 import { useAppSelector } from '../../../app/store/hooks'
 import { IProductR } from '../../../app/types/serverApiTypes'
+import { DropAlert } from '../../../components/shopComponents/layout/alert'
 import { BackPaper } from '../../../components/shopComponents/layout/backPaper'
 import { Layout } from '../../../components/shopComponents/layout/layout'
 import { ProductChangeForm } from '../../../components/shopComponents/productComponents/changeForm'
+import { ProductDeleteForm } from '../../../components/shopComponents/productComponents/deleteCard'
 import { ProductInfoCard } from '../../../components/shopComponents/productComponents/mainInfoCard'
 
 type ProductPagePropsType = {
@@ -28,6 +31,7 @@ const ProductPage: FC<ProductPagePropsType> = ({ content }) => {
           }}>
             <ProductInfoCard content={content} />
             <ProductChangeForm content={content} />
+            <ProductDeleteForm content={content} />
           </Box>
         </> : <>
           no content

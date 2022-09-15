@@ -18,10 +18,6 @@ const ShopPage: FC<ShopPagePropsType> = ({  }) => {
     dispatch(ProductThunks.getProducts())
   }, [])
 
-  useEffect(() => {
-    console.log(isLoaded)
-  }, [products])
-
   return <>
     <Layout>
       <Paper square sx={{

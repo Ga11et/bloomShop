@@ -15,7 +15,7 @@ export const ProductInfoCard: FC<ProductInfoCardPropsType> = ({ content }) => {
           padding: '20px'
         }}>
           <Grid container>
-            <Grid xs={12} md={5} lg={6}>
+            <Grid item xs={12} md={5} lg={6}>
               <Box>
                 <img style={{
                   display: 'block',
@@ -29,7 +29,7 @@ export const ProductInfoCard: FC<ProductInfoCardPropsType> = ({ content }) => {
                 Код товара: {content.code}
               </Typography>
             </Grid>
-            <Grid xs={0} md={7} lg={6}>
+            <Grid item xs={0} md={7} lg={6}>
               <Typography variant='h5' pb={3} component='h2'>
                 {content.name}
               </Typography>

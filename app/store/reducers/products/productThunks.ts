@@ -1,7 +1,9 @@
+import { IProductR } from './../../../types/serverApiTypes';
 import { postAPI } from './../../../api/postAPI';
 import { IPostProductType } from './../../../types/clientApiTypes';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchAPI } from '../../../api/fetchAPI';
+import { deleteAPI } from '../../../api/deleteAPI';
 export const ProductThunks = {
   postProduct: createAsyncThunk(
     'postProduct',
@@ -14,6 +16,20 @@ export const ProductThunks = {
     'getProducts',
     async () => {
       const response = await fetchAPI.products()
+      return response
+    }
+  ),
+  getOneProduct: createAsyncThunk(
+    'getOneProduct',
+    async (productId: string) => {
+      const response = await fetchAPI.productById(productId)
+      return response
+    }
+  ),
+  deleteProduct: createAsyncThunk(
+    'deleteProduct',
+    async (productData: IProductR) => {
+      const response = await deleteAPI.product(productData)
       return response
     }
   )

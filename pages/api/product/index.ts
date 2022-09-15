@@ -17,7 +17,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         await productAPIUtils.post(req, res)
         break;
       case 'DELETE':
-        await productAPIUtils.delete(req, res)
         break;
       case 'PUT':
         await productAPIUtils.put(req, res)

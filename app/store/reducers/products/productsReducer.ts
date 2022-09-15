@@ -4,6 +4,7 @@ import { ErrorType, IProductR } from '../../../types/serverApiTypes';
 
 interface IProductSlice {
   products: IProductR[]
+  activeProduct: IProductR | null
   isLoaded: boolean
   isSuccess: boolean
   errors: ErrorType[]
@@ -11,6 +12,7 @@ interface IProductSlice {
 
 const initialState: IProductSlice = {
   products: [],
+  activeProduct: null,
   errors: [],
   isLoaded: false,
   isSuccess: false
@@ -53,7 +55,20 @@ const ProductsSlice = createSlice({
         state.errors = action.payload.errors
       }
     })
-  },
+    builder.addCase(ProductThunks.deleteProduct.pending, (state) => {
+      state.isLoaded = false
+      state.errors = []
+    })
+    builder.addCase(ProductThunks.deleteProduct.fulfilled, (state, action) => {
+      state.isLoaded = true
+      if (action.payload.status === 200 && action.payload.data) {
+        state.products = action.payload.data
+      }
+      if (action.payload.status !== 200 && action.payload.errors) {
+        state.errors = action.payload.errors
+      }
+    })
+  }
 })
 
 export default ProductsSlice.reducer

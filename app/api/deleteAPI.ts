@@ -1,4 +1,6 @@
+import { IProductR } from './../types/serverApiTypes';
 import { AuthUserData, postAPIResponse, UniversalResponseAPIType } from '../types/serverApiTypes'
+import { filteredResponse } from '../types/clientApiTypes';
 
 export const deleteAPI = {
   async post (postIdl: string): Promise<postAPIResponse> {
@@ -25,6 +27,15 @@ export const deleteAPI = {
     const responseData: UniversalResponseAPIType<AuthUserData> = await response.json()
     return {
       status: response.status,
+      errors: responseData.errors
+    }
+  },
+  async product (product: IProductR): Promise<filteredResponse<IProductR[]>> {
+    const response = await fetch(`/api/product/${product.id}`, { method: 'DELETE' })
+    const responseData: UniversalResponseAPIType<IProductR[]> = await response.json()
+    return {
+      status: response.status,
+      data: responseData.data,
       errors: responseData.errors
     }
   }

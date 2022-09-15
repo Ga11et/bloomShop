@@ -1,4 +1,4 @@
-import mongoose, { model, Schema } from 'mongoose';
+import mongoose, { Model, model, Schema } from 'mongoose';
 
 export interface IToken {
   id: string
@@ -10,4 +10,4 @@ const TokenSchema = new Schema<IToken>({
   token: { type: String, required: true }
 })
 
-export const TokenModel = mongoose.models.TokenModel || model<IToken>('TokenModel', TokenSchema) 
+export const TokenModel = mongoose.models.TokenModel as Model<IToken> || model<IToken>('TokenModel', TokenSchema) 
