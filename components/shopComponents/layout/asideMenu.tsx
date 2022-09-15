@@ -21,9 +21,9 @@ export const AsideMenu: FC<AsideMenuPropsType> = ({ items }) => {
     }}>
       <List>
         {items.map((item, index) => (<div key={item.title + index}>
-          <ListItemButton  selected={selectedIndex === index}
+          <ListItemButton selected={selectedIndex === index}
             onClick={() => onListItemClick(index, item.handler)} sx={{
-              padding: '10px'
+              padding: '10px 20px'
             }}
           >
             <ListItemAvatar>

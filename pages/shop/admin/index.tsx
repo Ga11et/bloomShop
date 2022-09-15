@@ -37,10 +37,10 @@ const AdminPage: FC<AdminPagePropsType> = ({  }) => {
             Страница Администратора
           </Typography>
           <Grid container spacing={2} >
-            <Grid item lg={2} md={3} >
+            <Grid item lg={3} md={4} xs={0} >
               <AsideMenu items={menuItems} />
             </Grid>
-            <Grid item lg={10} md={9} >
+            <Grid item lg={9} md={8} xs={12} >
               <AddProduct />
             </Grid>
           </Grid>

@@ -11,7 +11,7 @@ export type RegData = {
   secondName: string
   email: string
 }
-// Profile Interfaces
+// Profile API Interfaces
 export interface IPostStatusData {
   userId: string
   newStatus: string
@@ -22,7 +22,7 @@ export interface IUpdateProfileData {
   email: string
   login: string
 }
-// Product Interfaces
+// Product API Interfaces
 export interface IPostProductType {
   name: string
   description: string
@@ -48,4 +48,14 @@ export type filteredResponse<P> = {
   status: number
   data?: P
   errors?: ErrorType[]
+}
+
+// Product Client Interfaces
+export interface IReviewsCounts {
+  one: number
+  two: number
+  three: number
+  four: number
+  five: number
+  all: number
 }
