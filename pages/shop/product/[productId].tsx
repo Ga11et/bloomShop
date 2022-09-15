@@ -1,5 +1,5 @@
 import { Box, Typography } from '@mui/material'
-import { GetStaticPaths, GetStaticProps } from 'next'
+import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import { FC, useEffect, useState } from 'react'
 import { fetchAPI } from '../../../app/api/fetchAPI'
@@ -16,6 +16,9 @@ type ProductPagePropsType = {
   content?: IProductR
 }
 const ProductPage: FC<ProductPagePropsType> = ({ content }) => {
+
+  const router = useRouter()
+  const { productId } = router.query
 
   return <>
     <Layout>
@@ -34,35 +37,44 @@ const ProductPage: FC<ProductPagePropsType> = ({ content }) => {
             <ProductDeleteForm content={content} />
           </Box>
         </> : <>
-          no content
+          no content {productId}
         </>}
       </BackPaper>
     </Layout>
   </>
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
+// export const getStaticPaths: GetStaticPaths = async () => {
 
-  const responseData = await fetchAPI.productPaths()
-  let paths = []
-  if (responseData.data) {
-    paths = responseData.data.map(product => ({ params: { productId: product } }))
-  } else {
-    paths = [{ params: { productId: '1' } }]
-  }
+//   const responseData = await fetchAPI.productPaths()
+//   let paths = []
+//   if (responseData.data) {
+//     paths = responseData.data.map(product => ({ params: { productId: product } }))
+//   } else {
+//     paths = [{ params: { productId: '1' } }]
+//   }
+
+//   return {
+//     paths: paths,
+//     fallback: false
+//   }
+// }
+
+// export const getStaticProps: GetStaticProps<{ content?: IProductR }, { productId: string }> = async ({ params }) => {
+
+//   const response = await fetchAPI.productById(params ? params.productId : '1')
+
+//   return {
+//     props: { content: response.data }
+//   }
+// }
+
+export const getServerSideProps: GetServerSideProps<{ content?: IProductR | null }, { productId: string }> = async ({ params }) => {
+
+  const response = params ? await fetchAPI.productById(params.productId) : { data: null }
 
   return {
-    paths: paths,
-    fallback: false
-  }
-}
-
-export const getStaticProps: GetStaticProps<{ content?: IProductR }, { productId: string }> = async ({ params }) => {
-
-  const response = await fetchAPI.productById(params ? params.productId : '1')
-
-  return {
-    props: { content: response.data }
+    props: { content: response.data ? response.data : null }
   }
 }
 
