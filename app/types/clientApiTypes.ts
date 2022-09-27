@@ -37,7 +37,15 @@ export interface IUpdateProduct {
   amount: number
   id: string
 }
-
+// Review API Interfaces
+export interface IPostReview {
+  productId: string
+  productName: string
+  positive: string
+  negative: string
+  comment: string
+  rating: number
+}
 export type PostType = {
   id: string
   title: string
@@ -58,4 +66,14 @@ export interface IReviewsCounts {
   four: number
   five: number
   all: number
+}
+export interface IPostReviewHelperItem {
+  title: string
+  success: boolean
+}
+export interface IPostReviewFormData {
+  positive: string
+  negative: string
+  comment: string
+  rating: number
 }

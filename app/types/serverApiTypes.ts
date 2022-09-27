@@ -15,6 +15,22 @@ export interface IProductR {
   amount: number
   code: number
 }
+export interface IReviewR {
+  id: string
+  authorId: string
+  authorName: string
+  productId: string
+  productName: string
+  rating: number
+  date: number
+  positive: string
+  negative: string
+  comment: string
+  likes: number
+}
+export interface ISuccessR {
+  isSuccess: boolean
+}
 
 export type ErrorType = {
   param: string

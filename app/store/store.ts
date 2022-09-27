@@ -1,3 +1,4 @@
+import { reviewsApi } from './reducers/reviews/reviewsQuery';
 import PostsReducer from './reducers/posts/postsReducer';
 import ProfileReducer from './reducers/profile/profileReducer';
 import AuthReducer from './reducers/auth/authReducer';
@@ -11,11 +12,13 @@ const rootReducer = combineReducers({
   AuthReducer,
   ProfileReducer,
   ProductsReducer,
-  AlertReducer
+  AlertReducer,
+  [reviewsApi.reducerPath]: reviewsApi.reducer
 })
 
 export const makeStore = (context: Context) => configureStore({
-  reducer: rootReducer
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(reviewsApi.middleware)
 })
 
 type Store = ReturnType<typeof makeStore>

@@ -1,4 +1,3 @@
-import { ProductMapping } from './../mapping/product';
 import { IProduct } from './../models/product';
 import { IProductR } from '../../app/types/serverApiTypes';
 import { IPostProductType, IUpdateProduct } from '../../app/types/clientApiTypes';
@@ -7,6 +6,7 @@ import { ExtendedRequestType, UniversalResponseAPIType } from '../../app/types/s
 import { ProductModel } from '../models/product';
 import { AppModel, IAppModel } from '../models/app';
 import { TokenUtils } from '../token/tokenUtils';
+import { MTRMapping } from '../mapping/mtr';
 
 export const productAPIUtils = {
   async getAll (req: ExtendedRequestType<{}>, res: NextApiResponse<UniversalResponseAPIType<IProductR[]>>) {
@@ -74,7 +74,7 @@ export const productAPIUtils = {
       await AppModel.findByIdAndUpdate(appInfo._id, { productCode: appInfo.productCode + 1 })
       const products = await ProductModel.find() as IProduct[]
 
-      res.status(200).json({ data: ProductMapping.modelToResponse(products) })
+      res.status(200).json({ data: MTRMapping.product(products) })
     } catch (error) {
       console.log('utils ' + error)
       res.status(400).json({ errors: [{ param: 'origin', msg: String(error) }] })
@@ -94,7 +94,7 @@ export const productAPIUtils = {
 
     await ProductModel.findByIdAndDelete(productId)
     const products = await ProductModel.find()
-    res.status(200).json({ data: ProductMapping.modelToResponse(products) })
+    res.status(200).json({ data: MTRMapping.product(products) })
   },
   async changeOneProduct (req: ExtendedRequestType<IUpdateProduct>, res: NextApiResponse<UniversalResponseAPIType<IProductR[]>>) {
     const { token } = req.cookies
@@ -112,6 +112,6 @@ export const productAPIUtils = {
     await ProductModel.findByIdAndUpdate(productId, { name, description, amount, price })
 
     const products = await ProductModel.find()
-    res.status(200).json({ data: ProductMapping.modelToResponse(products) })
+    res.status(200).json({ data: MTRMapping.product(products) })
   }
 }

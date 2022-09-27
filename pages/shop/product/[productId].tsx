@@ -22,18 +22,20 @@ const ProductPage: FC<ProductPagePropsType> = ({ }) => {
   const { productId } = router.query
   const { activeProduct, isLoaded } = useAppSelector(store => store.ProductsReducer)
   const { userData } = useAppSelector(store => store.AuthReducer)
-  const [activeMenu, setActiveMenu] = useState(0)
 
-  const menuItems: IAsideMenuItem[] = [
-    { icon: Reviews, title: 'Отзывы', handler: () => setActiveMenu(0) }
-  ]
-  if (userData?.role === 'admin') menuItems.push({ icon: AdminPanelSettings, title: 'Админская', handler: () => setActiveMenu(1) })
+
+  const [activeMenu, setActiveMenu] = useState(0)
 
   useEffect(() => {
     if ( typeof productId === 'string') {
       dispatch(ProductThunks.getOneProduct(productId))
     }
   }, [productId])
+
+  const menuItems: IAsideMenuItem[] = [
+    { icon: Reviews, title: 'Отзывы', handler: () => setActiveMenu(0) }
+  ]
+  if (userData?.role === 'admin') menuItems.push({ icon: AdminPanelSettings, title: 'Админская', handler: () => setActiveMenu(1) })
 
   return <>
     <Layout>
