@@ -1,4 +1,4 @@
-import mongoose, { model, ObjectId, Schema } from 'mongoose';
+import mongoose, { Model, model, ObjectId, Schema } from 'mongoose';
 
 export type userRole = 'user' | 'admin' | 'none'
 
@@ -25,4 +25,4 @@ const AdminSchema = new Schema<IAdmin>({
   image: { type: String, required: true, default: 'none' },
 })
 
-export const AdminModel = mongoose.models.AdminModel || model<IAdmin>('AdminModel', AdminSchema)
+export const AdminModel = mongoose.models.AdminModel as Model<IAdmin, {}, {}, {}, IAdmin> || model<IAdmin>('AdminModel', AdminSchema)

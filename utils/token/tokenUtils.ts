@@ -1,5 +1,4 @@
-import { NextApiResponse } from 'next';
-import { TokenJWTPayload, UniversalResponseAPIType } from '../../app/types/serverApiTypes';
+import { TokenJWTPayload } from '../../app/types/serverApiTypes';
 import { IToken, TokenModel } from '../models/token';
 import jwt from 'jsonwebtoken'
 

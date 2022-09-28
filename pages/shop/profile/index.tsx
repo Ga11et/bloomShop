@@ -1,7 +1,6 @@
 import { Container, Grid, Paper, Typography } from '@mui/material'
 import { FC, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
-import { ProfileThunks } from '../../../app/store/reducers/profile/profileThunks'
 import { AsideMenu } from '../../../components/shopComponents/layout/asideMenu'
 import { Layout } from '../../../components/shopComponents/layout/layout'
 import { Settings } from '@mui/icons-material'
@@ -10,19 +9,17 @@ import { useRouter } from 'next/router'
 import { ProfileInfo } from '../../../components/shopComponents/profileComponents/profileInfo'
 import { ProfileForm } from '../../../components/shopComponents/profileComponents/profileForm'
 import { WarningZone } from '../../../components/shopComponents/profileComponents/warningZone'
+import { useGetProfileInfoQuery } from '../../../app/store/reducers/profile/profileQuery'
 
 type ProfilePagePropsType = {
   
 }
 const ProfilePage: FC<ProfilePagePropsType> = ({  }) => {
 
-  const dispatch = useAppDispatch()
   const router = useRouter()
   const { isAuth } = useAppSelector(store => store.AuthReducer)
+  const { data: profileInfo } = useGetProfileInfoQuery(null)
 
-  useEffect(() => {
-    dispatch(ProfileThunks.getData())
-  }, [])
   useEffect(() => {
     if (!isAuth) router.push('/shop')
   }, [isAuth])
@@ -49,8 +46,8 @@ const ProfilePage: FC<ProfilePagePropsType> = ({  }) => {
         }}>
           <AsideMenu items={asideMenuItems} />
           <Grid container gap={2} >
-            <ProfileInfo />
-            <ProfileForm />
+            <ProfileInfo content={profileInfo?.data} />
+            <ProfileForm content={profileInfo?.data} />
             <WarningZone />
           </Grid>
         </Container>

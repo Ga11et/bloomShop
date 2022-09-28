@@ -95,6 +95,7 @@ export const Header: FC<HeaderPropsType> = ({  }) => {
               </IconButton>
             </Tooltip>
             <Menu
+              disableScrollLock
               anchorEl={accountMenuAnchor}
               open={Boolean(accountMenuAnchor)}
               anchorOrigin={{

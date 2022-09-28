@@ -22,6 +22,9 @@ export interface IUpdateProfileData {
   email: string
   login: string
 }
+export interface IUpdateProfilePhoto {
+  newPhoto: string
+}
 // Product API Interfaces
 export interface IPostProductType {
   name: string

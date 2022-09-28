@@ -17,6 +17,7 @@
     "@reduxjs/toolkit": "^1.8.5",
     "@types/bcrypt": "^5.0.0",
     "bcrypt": "^5.0.1",
+    "cloudinary": "^1.32.0",
     "dotenv": "^16.0.1",
     "formik": "^2.2.9",
     "jsonwebtoken": "^8.5.1",
