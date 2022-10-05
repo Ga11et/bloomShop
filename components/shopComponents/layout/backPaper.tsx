@@ -10,7 +10,7 @@ export const BackPaper: FC<BackPaperPropsType> = ({ children }) => {
 
   return <>
     <Paper square sx={{
-      backgroundColor: (t) => t.palette.grey[100],
+      backgroundColor: (t) => t.palette.background.default,
       paddingY: '50px'
     }}>
       <Container maxWidth='xl'>

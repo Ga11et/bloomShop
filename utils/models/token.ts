@@ -1,6 +1,7 @@
-import mongoose, { Model, model, Schema } from 'mongoose';
+import mongoose, { Model, model, ObjectId, Schema } from 'mongoose';
 
 export interface IToken {
+  _id: ObjectId
   id: string
   token: string
 }

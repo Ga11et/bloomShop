@@ -4,8 +4,10 @@ import { Box } from '@mui/system'
 import { useRouter } from 'next/router'
 import { FC, FormEvent, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
+import { AlertSlice } from '../../../app/store/reducers/alerts/alertsReducer'
 import { authThunks } from '../../../app/store/reducers/auth/authThunks'
 import { ErrorType } from '../../../app/types/serverApiTypes'
+import { AlertContainer } from '../../../components/shopComponents/layout/alertContainer'
 
 type RegistrationPagePropsType = {
   
@@ -15,15 +17,13 @@ const RegistrationPage: FC<RegistrationPagePropsType> = ({  }) => {
   const dispatch = useAppDispatch()
   const router = useRouter()
   const [localErrors, setLocalErrors] = useState<ErrorType[]>([])
-  const [isAlertShow, setIsAlertShow] = useState(false)
   const { isAuthLoading, errors, isRegSuccess } = useAppSelector(store => store.AuthReducer)
 
   useEffect(() => {
     if (errors) setLocalErrors(errors)
   }, [errors])
   useEffect(() => {
-    console.log(isRegSuccess)
-    if (isRegSuccess) setIsAlertShow(true)
+    if (isRegSuccess) dispatch(AlertSlice.actions.addAlert({ id: String(Date.now()), title: 'Пользователь успешно зарегистрирован', type: 'success' }))
   }, [isRegSuccess])
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -38,19 +38,13 @@ const RegistrationPage: FC<RegistrationPagePropsType> = ({  }) => {
   }
 
   return <>
-    <Grow in={isAlertShow} appear>
-      <Alert severity='success' sx={{
-        position: 'fixed',
-        left: 20,
-        bottom: 20,
-        minWidth: '200px'
-      }} onClose={() => setIsAlertShow(false)}>Success!</Alert>
-    </Grow>
+    <AlertContainer />
     <Grid container sx={{ height: '100vh' }}>
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square sx={{
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor: (t) => t.palette.background.default
       }} >
         <Box component='form' px={4} onSubmit={handleSubmit} sx={{
           display: 'flex',

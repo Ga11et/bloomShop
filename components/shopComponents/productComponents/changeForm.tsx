@@ -32,7 +32,7 @@ export const ProductChangeForm: FC<ProductChangeFormPropsType> = ({ content }) =
       <Card elevation={5} sx={{
         padding: '20px'
       }}>
-        <Typography variant='h5' component='h2' pb={2} color='error' >
+        <Typography variant='h5' component='h2' pb={2} color={(t) => t.palette.text.primary} >
           Изменение товара
         </Typography>
         <Box component='form' onSubmit={submitHandler}>
@@ -40,10 +40,19 @@ export const ProductChangeForm: FC<ProductChangeFormPropsType> = ({ content }) =
           <TextField name='description' defaultValue={content.description} required fullWidth label='Описание' margin='dense' />
           <TextField name='amount' defaultValue={content.amount} required fullWidth label='Количество в наличии' type='number' margin='dense' />
           <TextField name='price' defaultValue={content.price} required fullWidth label='Цена' type='number' margin='dense' />
-          <Button size='large' variant='outlined' type='submit' sx={{
+          <Button size='large' variant='contained' type='submit' sx={{
             marginTop: '20px'
           }}>Отправить</Button>
         </Box>
+        
+      </Card>
+      <Card elevation={5} sx={{
+        padding: '20px'
+      }}>
+        <Typography variant='h5' component='h2' pb={2} color={(t) => t.palette.text.primary} >
+          Изменение картинок
+        </Typography>
+        <Button size='large' variant='contained' type='button'>Добавить картинку</Button>
       </Card>
     </>}
   </>

@@ -10,7 +10,6 @@ type ProfileChangePhotoDialogPropsType = {
 }
 export const ProfileChangePhotoDialog: FC<ProfileChangePhotoDialogPropsType> = ({ isShow, onClose, defaultImage }) => {
 
-  const dispatch = useAppDispatch()
   const [activeImage, setActiveImage] = useState(defaultImage)
   const [updatePhoto, result] = useUpdateMutation()
 

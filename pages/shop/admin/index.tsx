@@ -29,7 +29,7 @@ const AdminPage: FC<AdminPagePropsType> = ({  }) => {
   return <>
     <Layout>
       <Paper square component='main' sx={{
-        backgroundColor: (t) => t.palette.grey[100],
+        backgroundColor: (t) => t.palette.background.default,
         padding: '20px 0'
       }}>
         <Container maxWidth='xl'>

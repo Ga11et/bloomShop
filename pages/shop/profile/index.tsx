@@ -32,7 +32,7 @@ const ProfilePage: FC<ProfilePagePropsType> = ({  }) => {
     <Layout>
       <Paper component='main' square sx={{
         padding: '20px 0',
-        backgroundColor: (t) => t.palette.grey[100]
+        backgroundColor: (t) => t.palette.background.default
       }}>
         <Container maxWidth='xl'>
           <Typography variant='h4' pb={5} pt={3} component='h1'>

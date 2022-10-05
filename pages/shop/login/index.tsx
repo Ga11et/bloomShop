@@ -44,7 +44,6 @@ const LoginPage: NextPage<LoginPagePropsType> = ({  }) => {
   <Paper component='main' square sx={{
     display: 'flex',
     justifyContent: 'center',
-    backgroundColor: (t) => t.palette.background.paper
   }}>
     <Grid container component='div' sx={{ height: '100vh' }}>
       <Grid item md={7} sm={4} xs={false} sx={{
@@ -57,7 +56,8 @@ const LoginPage: NextPage<LoginPagePropsType> = ({  }) => {
       <Grid item md={5} sm={8} xs={12} component={Paper} elevation={6} square sx={{
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor: (t) => t.palette.background.default
       }}>
         <Box component='form' px={4} onSubmit={handleSubmit} sx={{
           display: 'flex',

@@ -21,7 +21,7 @@ const ShopPage: FC<ShopPagePropsType> = ({  }) => {
   return <>
     <Layout>
       <Paper square sx={{
-        backgroundColor: (t) => t.palette.grey[100],
+        backgroundColor: (t) => t.palette.background.default,
         padding: '20px 0'
       }}>
         <Container maxWidth='xl'>

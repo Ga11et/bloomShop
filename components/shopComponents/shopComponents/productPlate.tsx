@@ -3,6 +3,7 @@ import { Box, Button, Card, CardMedia, Grid, Rating, Typography } from '@mui/mat
 import { useRouter } from 'next/router'
 import { FC } from 'react'
 import { IProductR } from '../../../app/types/serverApiTypes'
+import { ProductRating } from '../productComponents/productRating'
 
 type ProductPlatePropsType = {
   content: IProductR
@@ -34,24 +35,13 @@ export const ProductPlate: FC<ProductPlatePropsType> = ({ content }) => {
           gridTemplateRows: '1fr min-content min-content',
           height: '100%'
         }}>
-          <Typography variant='h6' component='h3'>
+          <Typography variant='h6' component='h3' color={(t) => t.palette.text.primary}>
             {content.name}
           </Typography>
+          <ProductRating amount={content.amount} value={4} />
           <Box>
-            <Button variant='outlined' color='secondary' sx={{
-              padding: '5px 10px',
-              display: 'flex',
-              alignItems: 'center'
-            }}>
-              <Rating value={3} readOnly size='small' />
-              <Typography component='p' pl={1} variant='body2' color='GrayText'>
-                {content.amount}
-              </Typography>
-            </Button>
-          </Box>
-          <Box>
-            <Typography pt={2} variant='body2' component='p'>
-              В наличии: <Typography variant='body2' display='inline-block' component='span' color='primary'>{content.amount}</Typography> шт.
+            <Typography pt={2} variant='body2' component='p' color={(t) => t.palette.text.primary}>
+              В наличии: <Typography variant='body2' display='inline-block' component='span' color={(t) => t.palette.secondary.contrastText}>{content.amount}</Typography> шт.
             </Typography>
           </Box>
         </Box>
@@ -60,7 +50,7 @@ export const ProductPlate: FC<ProductPlatePropsType> = ({ content }) => {
           flexDirection: 'column',
           alignItems: 'flex-end'
         }}>
-          <Typography variant='h4' component='h3' pb={4} color='secondary' fontWeight={500} >
+          <Typography variant='h4' component='h3' pb={4} color={(t) => t.palette.text.primary} fontWeight={500} >
             {content.price}₽
           </Typography>
           <Box sx={{
@@ -76,9 +66,10 @@ export const ProductPlate: FC<ProductPlatePropsType> = ({ content }) => {
             </Button>
             <Button size='large' variant='contained' color='primary'>Купить</Button>
           </Box>
-          <Button size='large' variant='contained' fullWidth color='success'
+          <Button size='large' variant='contained' fullWidth color='secondary'
             onClick={() => router.push(`/shop/product/${content.id}`)} sx={{
-              marginTop: 'auto'
+              marginTop: 'auto',
+              color: '#ECE6DB'
             }}
           >Подробнее</Button>
         </Box>

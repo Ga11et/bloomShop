@@ -40,6 +40,10 @@ export interface IUpdateProduct {
   amount: number
   id: string
 }
+export interface IPicture {
+  id: string
+  large: string
+}
 // Review API Interfaces
 export interface IPostReview {
   productId: string
