@@ -1,7 +1,7 @@
 import { updateAPI } from './../../../api/updateAPI';
 import { IProductR } from './../../../types/serverApiTypes';
 import { postAPI } from './../../../api/postAPI';
-import { IPostProductType, IUpdateProduct } from './../../../types/clientApiTypes';
+import { IPostProductType, IUpdateProduct, IPostImage, IDeleteImage } from './../../../types/clientApiTypes';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchAPI } from '../../../api/fetchAPI';
 import { deleteAPI } from '../../../api/deleteAPI';
@@ -38,6 +38,20 @@ export const ProductThunks = {
     'updateProduct',
     async (productData: IUpdateProduct) => {
       const response = await updateAPI.product(productData)
+      return response
+    }
+  ),
+  postPhoto: createAsyncThunk(
+    'postPhoto',
+    async (photoData: IPostImage) => {
+      const response = await postAPI.productImage(photoData)
+      return response
+    }
+  ),
+  deletePhoto: createAsyncThunk(
+    'deletePhoto',
+    async (thunkData: IDeleteImage) => {
+      const response = await deleteAPI.productImage(thunkData)
       return response
     }
   )

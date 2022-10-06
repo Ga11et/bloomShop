@@ -1,6 +1,6 @@
 import { NextApiRequest } from 'next';
 import { userRole } from '../../utils/models/admin';
-import { filteredResponse } from './clientApiTypes';
+import { filteredResponse, IProductImage } from './clientApiTypes';
 export interface ExtendedRequestType<B> extends NextApiRequest {
   body: B
 }
@@ -10,7 +10,7 @@ export interface IProductR {
   id: string
   name: string
   price: string
-  image: string[]
+  image: IProductImage[]
   description: string
   amount: number
   code: number

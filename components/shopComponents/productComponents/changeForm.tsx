@@ -1,9 +1,12 @@
-import { Box, Button, Card, TextField, Typography } from '@mui/material'
-import { FC, FormEvent } from 'react'
+import { Clear } from '@mui/icons-material'
+import { Box, Button, Card, IconButton, TextField, Typography } from '@mui/material'
+import { FC, FormEvent, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
 import { AlertSlice } from '../../../app/store/reducers/alerts/alertsReducer'
 import { ProductThunks } from '../../../app/store/reducers/products/productThunks'
+import { IProductImage } from '../../../app/types/clientApiTypes'
 import { IProductR } from '../../../app/types/serverApiTypes'
+import { ProductPhotoAddingDialog } from './addProfilePhotoDialog'
 
 type ProductChangeFormPropsType = {
   content: IProductR
@@ -12,6 +15,8 @@ export const ProductChangeForm: FC<ProductChangeFormPropsType> = ({ content }) =
 
   const dispatch = useAppDispatch()
   const { userData } = useAppSelector(store => store.AuthReducer)
+
+  const [isDialogOpen, setDialogOpen] = useState(false)
 
   const submitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -49,11 +54,57 @@ export const ProductChangeForm: FC<ProductChangeFormPropsType> = ({ content }) =
       <Card elevation={5} sx={{
         padding: '20px'
       }}>
+        <ProductPhotoAddingDialog isShow={isDialogOpen} onClose={setDialogOpen} productId={content.id} />
         <Typography variant='h5' component='h2' pb={2} color={(t) => t.palette.text.primary} >
           Изменение картинок
         </Typography>
-        <Button size='large' variant='contained' type='button'>Добавить картинку</Button>
+        <Box sx={{
+          display: 'flex',
+          flexWrap: 'wrap'
+        }}>
+          {content.image.map(image => <ImageItem content={image} key={image.id} productId={content.id} />)}
+        </Box>
+        <Button size='large' variant='contained' type='button' onClick={() => setDialogOpen(true)}>Добавить картинку</Button>
       </Card>
     </>}
+  </>
+}
+
+type ImageItemPropsType = {
+  content: IProductImage,
+  productId: string
+}
+const ImageItem: FC<ImageItemPropsType> = ({ content, productId }) => {
+
+  const dispatch = useAppDispatch()
+
+  const deletePhotoHandler = () => {
+    dispatch(ProductThunks.deletePhoto({ imageId: content.id, productId, publicId: content.publicId }))
+  }
+
+  return <>
+    <Box sx={{
+      width: '100px',
+      height: '100px',
+      marginBottom: '10px',
+      marginRight: '10px',
+      position: 'relative'
+    }}>
+      <img src={content.small} style={{
+        display: 'block',
+        objectFit: 'cover',
+        width: '100%',
+        height: '100%',
+        borderRadius: '4px'
+      }} />
+      <IconButton onClick={deletePhotoHandler} size='small' sx={{
+        position: 'absolute',
+        right: '0',
+        top: '0',
+        borderRadius: '4px'
+      }}>
+        <Clear color='error' />
+      </IconButton>
+    </Box>
   </>
 }

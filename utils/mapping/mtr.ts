@@ -2,6 +2,8 @@ import { IReviewR } from './../../app/types/serverApiTypes';
 import { IProductR } from '../../app/types/serverApiTypes';
 import { IProduct } from '../models/product';
 import { IReview } from '../models/product/review';
+import { ObjectId } from 'mongoose';
+import { IProductImage } from '../../app/types/clientApiTypes';
 export const MTRMapping = {
   product (products: IProduct[]): IProductR[] {
     return products.map(product => ({
@@ -10,7 +12,7 @@ export const MTRMapping = {
       description: product.description,
       amount: product.amount,
       code: product.code,
-      image: product.images,
+      image: product.images.map(image => ({ id: String(image._id), url: image.url, small: image.small, publicId: image.publicId })),
       price: product.price
     }))
   },
@@ -28,5 +30,13 @@ export const MTRMapping = {
       date: review.date,
       likes: review.likes
     }))
-  } 
+  },
+  image (images: { _id?: ObjectId, url: string, small: string, publicId: string }[]): IProductImage[] {
+    return images.map(image => ({
+      id: String(image._id),
+      small: image.small,
+      url: image.url,
+      publicId: image.publicId
+    }))
+  }
 }

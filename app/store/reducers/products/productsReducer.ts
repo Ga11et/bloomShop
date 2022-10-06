@@ -96,6 +96,32 @@ const ProductsSlice = createSlice({
         state.errors = action.payload.errors
       }
     })
+    builder.addCase(ProductThunks.postPhoto.pending, (state) => {
+      state.isLoaded = false
+      state.errors = []
+    })
+    builder.addCase(ProductThunks.postPhoto.fulfilled, (state, action) => {
+      state.isLoaded = true
+      if (action.payload.status === 200 && action.payload.data) {
+        state.activeProduct = action.payload.data
+      }
+      if (action.payload.status !== 200 && action.payload.errors) {
+        state.errors = action.payload.errors
+      }
+    })
+    builder.addCase(ProductThunks.deletePhoto.pending, (state) => {
+      state.isLoaded = false
+      state.errors = []
+    })
+    builder.addCase(ProductThunks.deletePhoto.fulfilled, (state, action) => {
+      state.isLoaded = true
+      if (action.payload.status === 200 && action.payload.data) {
+        state.activeProduct = action.payload.data
+      }
+      if (action.payload.status !== 200 && action.payload.errors) {
+        state.errors = action.payload.errors
+      }
+    })
   }
 })
 

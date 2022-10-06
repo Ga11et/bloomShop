@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongoose'
 import { ErrorType } from './serverApiTypes'
 
 export type AuthData = {
@@ -40,9 +41,14 @@ export interface IUpdateProduct {
   amount: number
   id: string
 }
-export interface IPicture {
-  id: string
-  large: string
+export interface IPostImage {
+  imageCode: string
+  productId: string
+}
+export interface IDeleteImage {
+  imageId: string
+  productId: string
+  publicId: string
 }
 // Review API Interfaces
 export interface IPostReview {
@@ -83,4 +89,10 @@ export interface IPostReviewFormData {
   negative: string
   comment: string
   rating: number
+}
+export interface IProductImage {
+  id: string
+  url: string
+  small: string
+  publicId: string
 }

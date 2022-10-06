@@ -1,3 +1,4 @@
+import { IDeleteImage, IPostImage } from './../../app/types/clientApiTypes';
 import { IProduct } from './../models/product';
 import { IProductR } from '../../app/types/serverApiTypes';
 import { IPostProductType, IUpdateProduct } from '../../app/types/clientApiTypes';
@@ -7,20 +8,13 @@ import { ProductModel } from '../models/product';
 import { AppModel, IAppModel } from '../models/app';
 import { TokenUtils } from '../token/tokenUtils';
 import { MTRMapping } from '../mapping/mtr';
+import cloudinary from '../servises/cloudinary';
 
 export const productAPIUtils = {
   async getAll (req: ExtendedRequestType<{}>, res: NextApiResponse<UniversalResponseAPIType<IProductR[]>>) {
     try {
       const products = await ProductModel.find()
-      res.status(200).json({ data: products.map(product => ({
-        id: String(product._id),
-        name: product.name,
-        description: product.description,
-        amount: product.amount,
-        code: product.code,
-        image: product.images,
-        price: product.price
-      })) })
+      res.status(200).json({ data: MTRMapping.product(products) })
     } catch (error) {
       console.log('utils ' + error)
       res.status(400).json({ errors: [{ param: 'origin', msg: String(error) }] })
@@ -48,7 +42,7 @@ export const productAPIUtils = {
         price: product.price,
         code: product.code,
         amount: product.amount,
-        image: product.images,
+        image: MTRMapping.image(product.images),
       } })
     } catch (error) {
       console.log('utils ' + error)
@@ -113,5 +107,88 @@ export const productAPIUtils = {
 
     const products = await ProductModel.find()
     res.status(200).json({ data: MTRMapping.product(products) })
+  },
+  async postImage (req: ExtendedRequestType<IPostImage>, res: NextApiResponse<UniversalResponseAPIType<IProductR>>) {
+    try {
+      const { token } = req.cookies
+      const { productId } = req.query
+      const { imageCode } = req.body
+
+      if (!token) return res.status(401).json({ errors: [{ param: 'origin', msg: 'Нет токена' }] })
+    
+      const isTokenValid = await TokenUtils.isTokenValid(token)
+      if (!isTokenValid) return res.status(401).json({ errors: [{ param: 'origin', msg: 'Токен не подходит' }] })
+    
+      const tokenData = await TokenUtils.isTokenExist(token)
+      if (!tokenData) return res.status(401).json({ errors: [{ param: 'origin', msg: 'Токена нет в базе' }] })
+      
+      const product = await ProductModel.findById(productId)
+      if (!product) return res.status(404).json({ errors: [{ param: 'origin', msg: 'Такого продукта нет' }] })
+
+      const cloudinaryResp = await cloudinary.uploader.upload(imageCode, { folder: 'bloomShop', eager: [
+        { width: 100, height: 100 }
+      ] })
+
+
+      product.images.push({ url: cloudinaryResp.url, small: cloudinaryResp.eager[0].url, publicId: cloudinaryResp.public_id })
+      await ProductModel.findByIdAndUpdate(productId, { images: product.images })
+
+      const newProduct = await ProductModel.findById(productId)
+      if (!newProduct) return res.status(404).json({ errors: [{ param: 'origin', msg: 'Такого продукта нет (новый)' }] })
+
+      res.status(200).json({ data: {
+        id: newProduct._id.toString(),
+        name: newProduct.name,
+        description: newProduct.description,
+        price: newProduct.price,
+        code: newProduct.code,
+        amount: newProduct.amount,
+        image: MTRMapping.image(newProduct.images)
+      } })
+    } catch (error) {
+      console.log('utils ' + error)
+      res.status(400).json({ errors: [{ param: 'origin', msg: String(error) }] })
+    }
+  },
+  async deleteImage (req: ExtendedRequestType<IDeleteImage>, res: NextApiResponse<UniversalResponseAPIType<IProductR>>) {
+    try {
+      const { token } = req.cookies
+      const { productId } = req.query
+      const { imageId, publicId } = req.body
+
+      if (!publicId) return res.status(404).json({ errors: [{ param: 'origin', msg: 'Не передан publicId' }] })
+
+      if (!token) return res.status(401).json({ errors: [{ param: 'origin', msg: 'Нет токена' }] })
+    
+      const isTokenValid = await TokenUtils.isTokenValid(token)
+      if (!isTokenValid) return res.status(401).json({ errors: [{ param: 'origin', msg: 'Токен не подходит' }] })
+    
+      const tokenData = await TokenUtils.isTokenExist(token)
+      if (!tokenData) return res.status(401).json({ errors: [{ param: 'origin', msg: 'Токена нет в базе' }] })
+      
+      const product = await ProductModel.findById(productId)
+      if (!product) return res.status(404).json({ errors: [{ param: 'origin', msg: 'Такого продукта нет' }] })
+
+      await ProductModel.findByIdAndUpdate(productId, { images: product.images.filter(image => String(image._id) !== imageId) })
+
+      const newProduct = await ProductModel.findById(productId)
+      if (!newProduct) return res.status(404).json({ errors: [{ param: 'origin', msg: 'Такого продукта нет (новый)' }] })
+
+      await cloudinary.uploader.destroy(publicId)
+
+      res.status(200).json({ data: {
+        id: newProduct._id.toString(),
+        name: newProduct.name,
+        description: newProduct.description,
+        price: newProduct.price,
+        code: newProduct.code,
+        amount: newProduct.amount,
+        image: MTRMapping.image(newProduct.images)
+      } }) 
+
+    } catch (error) {
+      console.log('utils ' + error)
+      res.status(400).json({ errors: [{ param: 'origin', msg: String(error) }] })
+    }
   }
 }

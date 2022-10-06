@@ -1,6 +1,6 @@
 import { authAPIResponseTest, AuthUserData, UniversalResponseAPIType, IProductR } from './../types/serverApiTypes';
 import { IPost } from './../../utils/models/post';
-import { AuthData, filteredResponse, IPostProductType, IPostStatusData, RegData } from '../types/clientApiTypes'
+import { AuthData, filteredResponse, IPostImage, IPostProductType, IPostStatusData, RegData } from '../types/clientApiTypes'
 import { postAPIResponse } from '../types/serverApiTypes'
 import { IProfileData } from '../types/profileSliceTypes';
 import { IProduct } from '../../utils/models/product';
@@ -52,5 +52,14 @@ export const postAPI = {
       data: responseData.data,
       errors: responseData.errors
     }
-  }
+  },
+  async productImage (postData: IPostImage): Promise<filteredResponse<IProductR>> {
+    const response = await fetch(`/api/product/images/${postData.productId}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(postData) })
+    const responseData: UniversalResponseAPIType<IProductR> = await response.json()
+    return {
+      status: response.status,
+      data: responseData.data,
+      errors: responseData.errors
+    }
+  },
 }
